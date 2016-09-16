@@ -30,6 +30,10 @@ class Wish(Base):
     link = Column(String(500))
     cost = Column(Numeric)
     created = Column(DateTime)
+    requester_id = Column(Integer, ForeignKey('user.id'))
+    requester = relationship(User, foreign_keys=[requester_id])
+    granter_id = Column(Integer, ForeignKey('user.id'))
+    granter = relationship(User, foreign_keys=[granter_id])
 
 def open_session():
     engine = create_engine('sqlite:///' + DB_NAME + '.db')
@@ -48,10 +52,7 @@ def create_user():
     if data == None:
         return "Error processing request.  Posted information must be a JSON object to create a new user"
 
-    engine = create_engine('sqlite:///' + DB_NAME + '.db')
-    Base.metadata.bind = engine
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
+    session = open_session()
 
     new_user = User(
                     first_name = data['first_name'],
@@ -69,12 +70,16 @@ def create_wish():
 
     session = open_session()
 
+    user = session.query(User).first()
+
     new_wish = Wish(
         name = data['name'],
         description = data['description'],
         link = data['link'],
         cost = data['cost'],
-        created = datetime.datetime.now()
+        created = datetime.datetime.now(),
+        requester = user,
+        granter = None
     )
     session.add(new_wish)
     session.commit()
