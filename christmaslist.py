@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 app = Flask(__name__)
 
 DB_NAME = "christmaslist"
@@ -44,7 +44,7 @@ def open_session():
 
 @app.route("/")
 def root():
-    return "Hello World!"
+    return render_template('index.html')
 
 @app.route("/create/user", methods=['POST'])
 def create_user():
@@ -90,4 +90,4 @@ def create_wish():
 if __name__ == "__main__":
     engine = create_engine('sqlite:///' + DB_NAME + '.db')
     Base.metadata.create_all(engine)
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True)
