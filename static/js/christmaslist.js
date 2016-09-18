@@ -23,6 +23,10 @@ angular.module('ChristmasList',
                 $log.debug("Test Button Works");
             };
 
+            $scope.redirectLogin = function() {
+                window.location = "/login";
+            }
+
             $scope.addWish = function () {
                 $log.debug("Inside $wish.add");
                 var modalInstance = $uibModal.open({
