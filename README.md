@@ -6,6 +6,10 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 ## Python
 
 - Flask >= 0.11.1
+- Flask-Login >= 0.3.2
+- Flask-WTF >= 0.12
+- Flask-bcrypt >= 0.7.1
+- Flask-SQLAlchemy >= 2.1
 - SQLAlchemy >= 1.0.15
 
 ## JavaScript/CSS
