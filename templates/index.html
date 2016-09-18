@@ -3,6 +3,9 @@
     <head>
         <link data-require="bootstrap-css@3.2.0" data-semvar="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
         <style>
+            body {
+                background-image: url("static/images/gplaypattern.png")
+            }
             .container {
                 margin: auto;
                 width: 960px;
@@ -46,8 +49,10 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" class="btn btn-primary" ng-click="test()">Test Button Logging</button>
+            <!--<button type="button" class="btn btn-primary" ng-click="test()">Test Button Logging</button>-->
             <button type="button" class="btn btn-success" ng-click="addWish()">Add Wish</button>
+            <br>
+            <button type="button" class="btn btn-primary" ng-click="redirectLogin()">Log-In</button>
         </div>
     </body>
 </html>

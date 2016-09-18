@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-image: url("static/images/gplaypattern.png");
+            }
+            .container {
+                width: 80%;
+                margin: 0px auto;
+            }
+        </style>
+
+        <link data-require="bootstrap-css@3.2.0" data-semvar="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+        <script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script data-require="angular@1.5.8" data-semvar="1.5.8" src="https://code.angularjs.org/1.5.8/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+
+        {% block head %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
