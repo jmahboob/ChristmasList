@@ -10,7 +10,9 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 
 ## JavaScript/CSS
 
-- Bootstrap >= 3.2.0
+- Bootstrap CSS >= 3.2.0
+- Angular Bootstrap >= ???
 - jQuery >= 2.2.1
-- AngularJS >= 1.2.21 < 2.0.0
-- Angular- Smart- Table >= ???
+- AngularJS >= 1.5.8 < 2.0.0
+- Angular-Animate >= 1.5.8 < 2.0.0
+- Angular-Smart-Table >= ???

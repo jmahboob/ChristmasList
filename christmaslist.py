@@ -64,27 +64,30 @@ def create_user():
     session.close()
     return jsonify(data)
 
-@app.route("/create/wish", methods=['POST'])
+@app.route("/create/wish", methods=['POST', 'GET'])
 def create_wish():
-    data = request.get_json(force=True)
+    if request.method == 'GET':
+        return render_template('addwish.html')
+    elif request.method == 'POST':
+        data = request.get_json(force=True)
 
-    session = open_session()
+        session = open_session()
 
-    user = session.query(User).first()
+        user = session.query(User).first()
 
-    new_wish = Wish(
-        name = data['name'],
-        description = data['description'],
-        link = data['link'],
-        cost = data['cost'],
-        created = datetime.datetime.now(),
-        requester = user,
-        granter = None
-    )
-    session.add(new_wish)
-    session.commit()
-    session.close()
-    return jsonify(data)
+        new_wish = Wish(
+            name = data['name'],
+            description = data['description'],
+            link = data['link'],
+            cost = data['cost'],
+            created = datetime.datetime.now(),
+            requester = user,
+            granter = None
+        )
+        session.add(new_wish)
+        session.commit()
+        session.close()
+        return jsonify(data)
 
 
 if __name__ == "__main__":
