@@ -29,10 +29,11 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def user_loader(user_id):
-    return User.query.get(user_id)
+    return User.query.filter_by(email=user_id).first()
 
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired()])
+    password = StringField('Password, validators=[DataRequired()]')
     remember = BooleanField('remember', default=False)
 
 class User(db.Model):
@@ -90,6 +91,7 @@ def page_not_found(e):
     return render_template("404.html")
 
 @app.route("/")
+@login_required
 def root():
     return render_template('index.html')
 
@@ -100,19 +102,22 @@ def admin():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    #session = open_session()
+    print (current_user)
+    user = current_user
+    if user.is_authenticated:
+        return redirect(url_for("root"))
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.get(form.email.data)
-        print user
+        #user = User.query.get(form.email.data)
+        user = User.query.filter_by(email=form.email.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
-                db.user.authenticated = True
+                user.authenticated = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                return redirect(url_for("/"))
+                return redirect(url_for("root"))
             else:
                 return "Invalid Password"
         else:
@@ -128,7 +133,7 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    return "Logout"
+    return render_template("logout.html")
 
 @app.route("/create/user", methods=['POST'])
 def create_user():

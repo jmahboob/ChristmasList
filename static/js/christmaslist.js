@@ -27,6 +27,10 @@ angular.module('ChristmasList',
                 window.location = "/login";
             }
 
+            $scope.redirectLogout = function() {
+                window.location = "/logout";
+            }
+
             $scope.addWish = function () {
                 $log.debug("Inside $wish.add");
                 var modalInstance = $uibModal.open({
