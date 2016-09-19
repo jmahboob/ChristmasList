@@ -2,12 +2,27 @@
 {% block head %}{% endblock %}
 {% block content %}
     <div class="jumbotron">
-        <h1>Sign In</h1>
+        <h1>
+            <span class="label label-primary">
+                Christmas List Time!
+            </span>
+        </h1>
+        <hr>
+        <p>
+            Welcome to my brand new Christmast List application!  I've created this both as an exercise (for myself)
+            and as a tool for us to use this holiday season (2016, in case anyone forgets).
+        </p>
+        <p>
+            Hopefully things will be pretty self-explanatory (that's part of the learning on my part), 
+            but if you need help there is a nice instruction page available once you log-in.
+        </p>
         <form action = "" method="post" name="login">
             {{ form.hidden_tag()  }}
             <p>
-                Please Enter Your Email:<br>
+                Email:<br>
                 {{ form.email(size=80) }}<br>
+                Password:<br>
+                {{ form.password(size=80) }}<br>
             </p>
             <p>{{ form.remember }} Remember Me</p>
             <p><input type="submit" value="Sign In"></p>
