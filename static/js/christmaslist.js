@@ -2,7 +2,9 @@ angular.module('ChristmasList',
 
     ['smart-table',
     'ui.bootstrap',
-    'ngAnimate'])
+    'ngAnimate',
+    'ngMaterial',
+    'ngMessages'])
 
     .controller('mainCtrl', ['$scope', '$log', '$uibModal',
         function (
