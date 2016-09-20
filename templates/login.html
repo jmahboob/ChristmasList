@@ -16,6 +16,26 @@
             Hopefully things will be pretty self-explanatory (that's part of the learning on my part), 
             but if you need help there is a nice instruction page available once you log-in.
         </p>
+        <md-content layout-padding>
+            <form action="" name="login" method="post">
+                {{ form.hidden_tag() }}
+                <md-input-container class="md-block">
+                    <label>E-mail Address</label>
+                    <input md-maxlength="80" required md-no-asterisk name="email" ng-model="project.email">
+                    <div ng-messages="testForm.description.$error">
+                        <div ng-messages="required">This is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Password</label>
+                    <input md-maxlength="80" required md-no-asterisk name="password" ng-model="project.password">
+                </md-input-container>
+                <div>
+                    <md-button class="md-primary md-raised" type="submit">Log-In</md-button>
+                </div>
+            </form>
+        </md-content>
+        <!--
         <form action = "" method="post" name="login">
             {{ form.hidden_tag()  }}
             <p>
@@ -27,6 +47,7 @@
             <p>{{ form.remember }} Remember Me</p>
             <p><input type="submit" value="Sign In"></p>
         </form>
+        -->
     </div>
 {% endblock %}
 
