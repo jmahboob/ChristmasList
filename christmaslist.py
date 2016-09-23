@@ -178,6 +178,12 @@ def create_wish():
         #session.close()
         return jsonify(data)
 
+@app.route("/test")
+@login_required
+def test():
+    return "Nope :-("
+    #return render_template("test.html")
+
 
 if __name__ == "__main__":
     #engine = create_engine('sqlite:///' + DB_NAME + '.db')
