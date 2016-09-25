@@ -37,6 +37,17 @@
 
     <body ng-controller="mainCtrl">
         <div class="container">
+            <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+                <!--<md-nav-item md-nav-href="test" name="Test HREF">Test HREF</md-nav-item>-->
+                <md-nav-item md-nav-click="goto('myList')" name="myList">My List</md-nav-item>
+                <md-nav-item md-nav-click="goto('familyMembers/page')" name="familyMembers/page">Family Members</md-nav-item>
+            </md-nav-bar>
+            <div class="ext-content">
+                {% raw %}
+                <iframe width="100%" height="100%" src={{currentNavItem}} frameBorder="0"></iframe>
+                {% endraw %}
+            </div>
+
             <h1>Christmas List Time Woot Woot!</h1>
             <div class="center">
                 <table st-table="rowCollection" class="table table-striped">

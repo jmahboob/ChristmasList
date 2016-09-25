@@ -6,12 +6,16 @@ angular.module('ChristmasList',
     'ngMaterial',
     'ngMessages'])
 
-    .controller('mainCtrl', ['$scope', '$log', '$uibModal',
+    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal',
         function (
 
+            $timeout,
             $scope,
             $log,
             $uibModal) {
+
+            $scope.currentNavItem = 'myList';
+            $scope.item = {firstName: "Null", lastName: "Nulleson"};
 
             $log.debug("Initializing Controller");
 
@@ -20,6 +24,12 @@ angular.module('ChristmasList',
                 {firstName: 'Tom', lastName: 'Tomlinson'},
                 {firstName: 'Joe', lastName: 'Joelson'}
             ];
+
+            $scope.loadSelection = function() {
+                return $timeout(function() {
+                    $scope.rowCollection = $scope.rowCollection;
+                }, 656);
+            }
 
             $scope.test = function() {
                 $log.debug("Test Button Works");

@@ -16,6 +16,7 @@ from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 import flask_bcrypt as bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -23,6 +24,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///christmaslist.db'
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+mail = Mail(app)
 
 #DB_NAME = "christmaslist"
 #Base = declarative_base()
@@ -183,6 +185,37 @@ def create_wish():
 def test():
     return "Nope :-("
     #return render_template("test.html")
+
+@app.route("/testEmail")
+@login_required
+def testEmail():
+    msg = Message(
+        'Test',
+        sender='xmaslist2016@gmail.com',
+        recipients = ['jamal.mahboob@gmail.com']
+    )
+    msg.body = "Test Flask-Email"
+    mail.send(msg)
+    return "Sent"
+
+@app.route("/myList")
+@login_required
+def myList():
+    return "<center>This will be your list of requested items</center>"
+
+@app.route("/familyMembers/<function>")
+@login_required
+def familyMembers(function):
+    if function == 'load':
+        #return "<center>" + str(User.query.order_by(User.first_name)) + "</center>"
+        users = User.query.order_by(User.first_name).all()
+        for user in users:
+            print user.first_name
+        #return "<center>This will show a list of all the system users</center>"
+        return "printed to debug - check apache error log"
+    elif function == 'page':
+        return render_template("familyMembers.html")
+    return "Error"
 
 
 if __name__ == "__main__":
