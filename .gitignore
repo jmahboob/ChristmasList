@@ -5,3 +5,4 @@ local/
 share/
 *.pyc
 templates/test.html
+config.py
