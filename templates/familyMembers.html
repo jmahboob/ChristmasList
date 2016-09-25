@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="ChristmasList">
+    <head>
+        <title>Christmas List</title>
+        <link data-require="bootstrap-css@3.2.0" data-semvar="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
+        <style>
+            body {
+                background-image: url("static/images/gplaypattern.png")
+            }
+            .container {
+                margin: auto;
+                width: 960px;
+                text-align: center;
+            }
+            .center {
+                margin: auto;
+                width: 50%;
+            }
+        </style>
+        <!-- Favicon -->
+        <link rel="icon" type="image.ico" href="static/images/favicon.ico">
+
+        <script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script data-require="angular@1.5.8" data-semver="1.5.8" src="https://code.angularjs.org/1.5.8/angular.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        <!-- Locally sourced JS files -->
+        <script src="static/js/smart-table.js"></script>
+        <script src="static/js/christmaslist.js"></script>
+        <script src="static/js/ui-bootstrap.js"></script>
+        <script src="static/js/ui-bootstrap-tpls.js"></script>
+    </head>
+
+    <body ng-controller="mainCtrl">
+        <div class="container">
+            <h1>Christmas List Time Woot Woot!</h1>
+            <div class="center">
+                <table st-table="rowCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <tr ng-repeat="row in rowCollection">
+                            {% raw %}
+                            <td>{{row.firstName}}</td>
+                            <td>{{row.lastName}}</td>
+                            {% endraw %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--<button type="button" class="btn btn-primary" ng-click="test()">Test Button Logging</button>-->
+            <button type="button" class="btn btn-success" ng-click="addWish()">Add Wish</button>
+            <br>
+            <button type="button" class="btn btn-primary" ng-click="redirectLogin()">Log-In</button>
+            <br>
+            <button type="button" class="btn btn-danger" ng-click="redirectLogout()">Log-Out</button>
+        </div>
+    </body>
+</html>
