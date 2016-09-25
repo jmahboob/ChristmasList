@@ -4,15 +4,17 @@ angular.module('ChristmasList',
     'ui.bootstrap',
     'ngAnimate',
     'ngMaterial',
-    'ngMessages'])
+    'ngMessages',
+    'ngRoute'])
 
-    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal',
+    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog',
         function (
 
             $timeout,
             $scope,
             $log,
-            $uibModal) {
+            $uibModal,
+            $mdDialog) {
 
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
@@ -43,7 +45,7 @@ angular.module('ChristmasList',
                 window.location = "/logout";
             }
 
-            $scope.addWish = function () {
+            /*$scope.addWish = function () {
                 $log.debug("Inside $wish.add");
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -54,20 +56,56 @@ angular.module('ChristmasList',
                     size: 'lg',
                     resolve: {}
                 });
+            };*/
+
+            $scope.addWish = function(ev) {
+                $mdDialog.show({
+                    controller: AddWishController,
+                    templateUrl: 'create/wish',
+                    targetEvent: ev,
+                    clickOutsideToClose: false,
+                });
             };
-        }
-    ])
 
-    .controller('AddWishController', function ($uibModalInstance) {
-        var $wish = this;
+            function AddWishController($scope, $mdDialog) {
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
 
-        $wish.ok = function () {
-            $log.debug("Add Wish OK");
-            $uibModalInstance.close('OK');
-        };
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
 
-        $wish.cancel = function () {
-            $log.debug("Add Wish Cancel");
-            $uibModalInstance.dismiss('Cancel');
-        };
-    });
+                $scope.answer = function(item) {
+                    $mdDialog.hide(item);
+                };
+            };
+    }
+])
+
+/*.controller('AddWishController', function ($uibModalInstance, $scope, $mdDialog) {
+    var $wish = this;
+
+    $wish.ok = function () {
+        $log.debug("Add Wish OK");
+        $uibModalInstance.close('OK');
+    };
+
+    $wish.cancel = function () {
+        $log.debug("Add Wish Cancel");
+        $uibModalInstance.dismiss('Cancel');
+    };
+})*/
+
+.config(function($routeProvider) {
+    $routeProvider
+        .when("/test", {
+            templateUrl: "../../templates/test.html"
+        })
+        .when("/familyMembers", {
+            templateUrl: "../../templates/familyMembers.html"
+        })
+        .when("/myList", {
+            templateUrl: "../../templates/myList.html"
+        });
+});

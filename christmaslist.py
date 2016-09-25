@@ -183,7 +183,7 @@ def create_wish():
 @app.route("/test")
 @login_required
 def test():
-    return "Nope :-("
+    return "<center>Nope :-(</center>"
     #return render_template("test.html")
 
 @app.route("/testEmail")

@@ -1,7 +1,8 @@
 {% extends "template.html" %}
 {% block head %}{% endblock %}
 {% block content %}
-    <div class="jumbotron">
+<!-- <div class="jumbotron"> -->
+    <div>
         <h1>
             <span class="label label-primary">
                 Christmas List Time!
@@ -28,7 +29,7 @@
                 </md-input-container>
                 <md-input-container class="md-block">
                     <label>Password</label>
-                    <input md-maxlength="80" required md-no-asterisk name="password" ng-model="project.password">
+                    <input type='password' md-maxlength="80" required md-no-asterisk name="password" ng-model="project.password">
                 </md-input-container>
                 <div>
                     <md-button class="md-primary md-raised" type="submit">Log-In</md-button>

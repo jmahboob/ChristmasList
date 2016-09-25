@@ -2,6 +2,8 @@
 <html ng-app="ChristmasList">
     <head>
         <title>Christmas List</title>
+        <!-- Comment this out and everyone will get the "Desktop" view (which will work but isn't super pretty) -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link data-require="bootstrap-css@3.2.0" data-semvar="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
         <style>
@@ -9,13 +11,22 @@
                 background-image: url("static/images/gplaypattern.png")
             }
             .container {
-                margin: auto;
-                width: 960px;
-                text-align: center;
+                width: 80%;
+                margin: 0px auto;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                position: absolute;
             }
             .center {
                 margin: auto;
                 width: 50%;
+            }
+            .green {
+                background: green;
+            }
+            .red {
+                background: red;
             }
         </style>
         <!-- Favicon -->
@@ -27,6 +38,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
         <!-- Locally sourced JS files -->
         <script src="static/js/smart-table.js"></script>
@@ -39,8 +51,11 @@
         <div class="container">
             <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
                 <!--<md-nav-item md-nav-href="test" name="Test HREF">Test HREF</md-nav-item>-->
-                <md-nav-item md-nav-click="goto('myList')" name="myList">My List</md-nav-item>
-                <md-nav-item md-nav-click="goto('familyMembers/page')" name="familyMembers/page">Family Members</md-nav-item>
+                <!--<md-nav-item md-nav-click="goto('myList')" name="myList">My List</md-nav-item>-->
+                <!--<md-nav-item md-nav-click="goto('familyMembers/page')" name="familyMembers/page">Family Members</md-nav-item>-->
+                <md-nav-item md-nav-sref="#myList" name="myList">My List</md-nav-item>
+                <md-nav-item md-nav-sref="#familyMembers/page" name="familyMembers/page">Family Members</md-nav-item>
+                <md-nav-item md-nav-sref="#test" name="test">Test page</md-nav-item>
             </md-nav-bar>
             <div class="ext-content">
                 {% raw %}
@@ -68,7 +83,11 @@
                 </table>
             </div>
             <!--<button type="button" class="btn btn-primary" ng-click="test()">Test Button Logging</button>-->
-            <button type="button" class="btn btn-success" ng-click="addWish()">Add Wish</button>
+            <!-- Replacing this with an Angular Material style Dialog instead of a bootstrap Modal -->
+            <!--<button type="button" class="btn btn-success" ng-click="addWish()">Add Wish</button>-->
+            <md-button class="md-primary md-raised" ng-click="addWish()">
+                Add Wish
+            </md-button>
             <br>
             <button type="button" class="btn btn-primary" ng-click="redirectLogin()">Log-In</button>
             <br>
