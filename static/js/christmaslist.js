@@ -7,14 +7,15 @@ angular.module('ChristmasList',
     'ngMessages',
     'ngRoute'])
 
-    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog',
+    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav',
         function (
 
             $timeout,
             $scope,
             $log,
             $uibModal,
-            $mdDialog) {
+            $mdDialog,
+            $mdSidenav) {
 
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
@@ -80,7 +81,19 @@ angular.module('ChristmasList',
                     $mdDialog.hide(item);
                 };
             };
-    }
+
+            $scope.toggleMenu = buildMenu();
+
+            function buildMenu() {
+                return function() {
+                    $mdSidenav('menu')
+                        .toggle()
+                        .then(function() {
+                            $log.debug("Menu toggled");
+                        });
+                }
+            }
+        }
 ])
 
 /*.controller('AddWishController', function ($uibModalInstance, $scope, $mdDialog) {
@@ -96,6 +109,15 @@ angular.module('ChristmasList',
         $uibModalInstance.dismiss('Cancel');
     };
 })*/
+
+.controller('Menu', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.closeMenu = function() {
+        $mdSidenav('menu').close()
+            .then(function() {
+                $log.debug("Menu closed");
+            });
+    };
+})
 
 .config(function($routeProvider) {
     $routeProvider

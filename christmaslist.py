@@ -9,6 +9,8 @@
 #from sqlalchemy.orm import relationship, sessionmaker
 #from sqlalchemy import create_engine
 
+import base64 as b64
+
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_wtf import Form
@@ -216,6 +218,15 @@ def familyMembers(function):
     elif function == 'page':
         return render_template("familyMembers.html")
     return "Error"
+
+@app.route("/<first>/<last>/isgay")
+def isGay(first, last):
+    first = first[0].upper() + first[1:].lower()
+    last = last[0].upper() + last[1:].lower()
+    outstr = "%s %s \nis a ho...mo...sexual!" % (first, last)
+    outstr = b64.b64encode(outstr)
+    to_ret = "<html><head><style>img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}</style></head>"
+    return to_ret + "<img src=https://frinkiac.com/gif/S08E15/419251/423205.gif?b64lines=" + outstr + " /></html>"
 
 
 if __name__ == "__main__":
