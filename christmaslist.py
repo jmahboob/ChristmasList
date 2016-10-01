@@ -152,6 +152,7 @@ def logout():
     return render_template("logout.html")
 
 @app.route("/create/user", methods=['POST'])
+@login_required
 def create_user():
     data = request.get_json(force=True)
     if data == None:
@@ -170,6 +171,7 @@ def create_user():
     return jsonify(data)
 
 @app.route("/create/wish", methods=['POST', 'GET'])
+@login_required
 def create_wish():
     if request.method == 'GET':
         return render_template('addwish.html')
