@@ -2,7 +2,7 @@
 
 #import os
 #import sys
-#import datetime
+import datetime
 
 #from sqlalchemy import Column, ForeignKey, Integer, String, Numeric, DateTime, Boolean
 #from sqlalchemy.ext.declarative import declarative_base
@@ -175,6 +175,20 @@ def create_wish():
         return render_template('addwish.html')
     elif request.method == 'POST':
         data = request.get_json(force=True)
+        print data
+        print current_user
+
+        new_wish = Wish(
+            name = data['name'],
+            description = data['description'],
+            cost = data['cost'],
+            link = data['url'],
+            created = datetime.datetime.now(),
+            requester = current_user,
+            granter = None
+        )
+        db.session.add(new_wish)
+        db.session.commit()
 
         #session = open_session()
 

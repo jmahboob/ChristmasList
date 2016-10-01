@@ -80,7 +80,12 @@ angular.module('ChristmasList',
                 $mdDialog.show({
                     controller: AddWishController,
                     templateUrl: 'create/wish',
+                    // Were passing the parent (root) scope in, this seems necessary in order to grab elements and call a function with them
+                    scope: $scope,
+                    // If we forget to preserve said scope then it gets destroyed when the dialog is dismissed and the entire application becomes non-responsive (essentially breaking it)
+                    preserveScope: true,
                     targetEvent: ev,
+                    parent: angular.element(document.body),
                     clickOutsideToClose: false,
                 });
             };
@@ -91,11 +96,26 @@ angular.module('ChristmasList',
                 };
 
                 $scope.cancel = function() {
+                    $log.debug("Add Wish Controller - Cancelled")
                     $mdDialog.cancel();
                 };
 
-                $scope.answer = function(item) {
-                    $mdDialog.hide(item);
+                $scope.answer = function(answer) {
+                    $log.debug("Adding Wish - " + answer);
+                    var headers = {'Content-Type': 'application/json'};
+                    var answer_json = {};
+                    answer_json.name = answer[0];
+                    answer_json.cost = answer[1];
+                    answer_json.url = answer[2];
+                    answer_json.description = answer[3];
+                    $http.post("create/wish", JSON.stringify(answer_json), headers)
+                        .success(function(data, status, headers, config) {
+                            $log.debug("Added Wish");
+                        })
+                        .error(function(data, status, headers, config) {
+                            $log.debug("Error adding Wish");
+                        });
+                    $mdDialog.hide(answer);
                 };
             };
 
