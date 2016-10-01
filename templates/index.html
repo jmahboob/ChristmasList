@@ -62,39 +62,12 @@
                 <md-nav-item md-nav-sref="#test" name="test">Test page</md-nav-item>
             </md-nav-bar>
             -->
-            <md-toolbar class="md-hue-2">
-                <div class="md-toolbar-tools">
-                    <md-button class="md-primary md-raised" aria-label="Menu" ng-click="toggleMenu()">
-                        Menu
-                    </md-button>
-                    <span flex></span>
-                    <h2>
-                        <span>Christmas List</span>
-                    </h2>
-                </div>
-            </md-toolbar>
 
-            <md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="menu">
-                <md-content ng-controller="Menu" layout-padding>
-                    <md-grid-list md-cols="1" md-gutter="5px" md-row-height="60px">
-                        <md-grid-tile class="md-block">
-                            <md-button>Item 3</md-button>
-                        </md-grid-tile>
-                        <md-grid-tile class="md-block">
-                            <md-button class="md-primary md-raised" ng-click="addWish()">
-                                Add Wish
-                            </md-button>
-                        </md-grid-tile>
-                        <md-grid-tile class="md-block">
-                            <md-button class='md-primary md-raised' ng-click="closeMenu()">Close</md-button>
-                        </md-grid-tile>
-                        <md-grid-tile class="md-block">
-                            <md-button class="md-warn md-raised" ng-click="redirectLogout()">Log-Out</md-button>
-                        </md-grid-tile>
-                    </md-grid-list>
-                </md-content>
-            </md-sidenav>
+            {% from "menu.html" import menu %}
+            {{ menu() }}
 
+            {% from "sidenav.html" import sidenav %}
+            {{ sidenav() }}
             <!-- We got rid of the nav-bar so we're ditching this -->
             <!-- 
             <div class="ext-content">
