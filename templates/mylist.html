@@ -1,0 +1,34 @@
+{% extends "template.html" %}
+{% block content %}
+{% from "sidenav.html" import sidenav %}
+{% from "menu.html" import menu %}
+{{ menu() }}
+{{ sidenav() }}
+<div ng-repeat="item in mylist">
+    {% raw %}
+    <md-card md-theme='dark-blue'>
+        <md-card-header>
+            <md-card-header-text>
+                <md-title>
+                    <h2>{{ item.name }}</h2>
+                </md-title>
+                <md-subhead>
+                    {{ item.cost }}   
+                </md-subhead>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            {{ item.description }}
+            {{ item.requester }}
+            {{ item.granter }}
+            <hr>
+            <a href="{{ item.link }}">{{ item.link }}</a>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class='md-raised'>Update</md-button>
+            <md-button class='md-raised'>Remove</md-button>
+        </md-card-actions>
+    </md-card>
+    {% endraw %}
+</div>
+{% endblock %}
