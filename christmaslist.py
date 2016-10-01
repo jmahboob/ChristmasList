@@ -11,7 +11,7 @@
 
 import base64 as b64
 
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, json
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_wtf import Form
 from wtforms import StringField, BooleanField
@@ -75,6 +75,18 @@ class Wish(db.Model):
     requester = db.relationship('User', foreign_keys=[requester_id])
     granter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     granter = db.relationship('User', foreign_keys=[granter_id])
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'link': self.link,
+            'cost': self.cost,
+            'created': self.created,
+            'requester_id': self.requester_id,
+            'granter_id': self.granter_id
+        }
 
 """
 def open_session():
@@ -200,10 +212,19 @@ def testEmail():
     mail.send(msg)
     return "Sent"
 
-@app.route("/myList")
+@app.route("/mylist")
 @login_required
 def myList():
-    return "<center>This will be your list of requested items</center>"
+    return render_template("mylist.html")
+
+@app.route("/mylist/loadlist")
+@login_required
+def loadList():
+    list = Wish.query.all()
+    ret = []
+    for wish in list:
+        ret.append(wish.serialize())
+    return jsonify(ret)
 
 @app.route("/familyMembers/<function>")
 @login_required

@@ -7,7 +7,7 @@ angular.module('ChristmasList',
     'ngMessages',
     'ngRoute'])
 
-    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav',
+    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http',
         function (
 
             $timeout,
@@ -15,7 +15,8 @@ angular.module('ChristmasList',
             $log,
             $uibModal,
             $mdDialog,
-            $mdSidenav) {
+            $mdSidenav,
+            $http) {
 
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
@@ -27,6 +28,18 @@ angular.module('ChristmasList',
                 {firstName: 'Tom', lastName: 'Tomlinson'},
                 {firstName: 'Joe', lastName: 'Joelson'}
             ];
+
+            $scope.mylist = '';
+            $scope.loadlist = function() {
+                $http.get("mylist/loadlist").then(function(response) {
+                    $scope.mylist = response.data;
+                });
+            };
+            $scope.loadlist();
+
+            $scope.accessMyList = function() {
+                window.location = "/mylist";
+            }
 
             $scope.loadSelection = function() {
                 return $timeout(function() {
@@ -44,6 +57,10 @@ angular.module('ChristmasList',
 
             $scope.redirectLogout = function() {
                 window.location = "/logout";
+            }
+
+            $scope.goHome = function() {
+                window.location = "/";
             }
 
             /*$scope.addWish = function () {
@@ -130,4 +147,8 @@ angular.module('ChristmasList',
         .when("/myList", {
             templateUrl: "../../templates/myList.html"
         });
+})
+
+.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
 });
