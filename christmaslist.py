@@ -88,6 +88,51 @@ class Wish(db.Model):
             'granter_id': self.granter_id
         }
 
+class Purchase(db.Model):
+    #__tablename__ = 'purcahse'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500))
+    link = db.Column(db.String(500))
+    created = db.Column(db.DateTime)
+    purchaser_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    purchaser = db.relationship('User', foreign_keys=[purchaser_id])
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'link': self.link,
+            'created': self.created,
+            'purchaser_id': self.purchaser_id
+        }
+
+
+class Idea(db.Model):
+    #__tablename__ = 'purcahse'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500))
+    link = db.Column(db.String(500))
+    created = db.Column(db.DateTime)
+    forperson_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    forperson = db.relationship('User', foreign_keys=[forperson_id])
+    byperson_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    byperson = db.relationship('User', foreign_keys=[byperson_id])
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'link': self.link,
+            'created': self.created,
+            'forperson_id': self.forperson_id,
+            'byperson_id': self.byperson_id
+        }
+
+
 """
 def open_session():
     engine = create_engine('sqlite:///' + DB_NAME + '.db')
@@ -210,6 +255,22 @@ def create_wish():
         #session.close()
         return jsonify(data)
 
+@app.route("/create/purchase", methods=['POST', 'GET'])
+@login_required
+def create_purchase():
+    if request.method == 'GET':
+        return render_template('addpurchase.html')
+    else:
+        pass
+
+@app.route("/create/idea", methods=['POST', 'GET'])
+@login_required
+def create_idea():
+    if request.method == 'GET':
+        return render_template('addidea.html')
+    else:
+        pass
+
 @app.route("/test")
 @login_required
 def test():
@@ -240,6 +301,34 @@ def loadList():
     ret = []
     for wish in list:
         ret.append(wish.serialize())
+    return jsonify(ret)
+
+@app.route("/myideas")
+@login_required
+def myIdeas():
+    return render_template("myideas.html")
+
+@app.route("/myideas/loadideas")
+@login_required
+def loadIdeas():
+    list = Idea.query.all()
+    ret = []
+    for idea in list:
+        ret.append(idea.serialize())
+    return jsonify(ret)
+
+@app.route("/mypurchases")
+@login_required
+def myPurchases():
+    return render_template("mypurchases.html")
+
+@app.route("/mypurchases/loadpurchases")
+@login_required
+def loadPurchases():
+    list = Purchase.query.all()
+    ret = []
+    for purchase in list:
+        ret.append(purchase.serialize())
     return jsonify(ret)
 
 @app.route("/familyMembers/<function>")
