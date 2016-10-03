@@ -90,6 +90,10 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.checkSidenav = function() {
+                return $mdSidenav('menu').isOpen();
+            }
+
             function AddWishController($scope, $mdDialog) {
                 $scope.hide = function() {
                     $mdDialog.hide();
