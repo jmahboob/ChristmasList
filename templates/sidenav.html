@@ -1,9 +1,16 @@
 {% macro sidenav() %}
 <md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="menu">
     <md-content flex ng-controller="Menu" layout-padding class="_md flex">
+        <!--
         <md-grid-list md-cols="1" md-gutter="5px" md-row-height="60px">
             <md-grid-tile class="md-block">
                 <md-button class="md-raised" ng-click="goHome()">
+        -->
+                    <!-- Keeping this in here in case I revisit it -->
+                    <!-- The idea was to have a tooltip auto-open to the right.  If the menu was open the tooltip was active -->
+                    <!-- This would get rid of some "hover" issues with mobile, but it wasn't working and I abandoned it -->
+                    <!--<md-tooltip md-direction="right" md-visible='checkSidenav()'>Click here to return to the home page.</md-tooltip>-->
+        <!--
                     Home
                 </md-button>
             </md-grid-tile>
@@ -21,7 +28,9 @@
             <md-grid-tile class="md-block">
                 <md-button class="md-warn md-raised" ng-click="redirectLogout()">Log-Out</md-button>
             </md-grid-tile>
+            </md-list>
         </md-grid-list>
+        -->
         <!-- I don't like the buttons so I'll figure out this element thing later, functionality for now -->
         <!--
         <ul class="docs-menu">
@@ -30,6 +39,33 @@
             </li>
         </ul>
         -->
+        <md-list layout="column" layout-alignt="center center">
+            <!-- Navigation Items -->
+            <md-button class="md-block md-raised" ng-click="goHome()">Home</md-button>
+            <div style="text-align:center; font-style:italic;">Go back to the main menu</div>
+
+            <md-button class="md-raised" ng-click="accessMyList()">My List</md-button>
+            <div style="text-align:center; font-style:italic;">Check on all of the items you've added to your personal list</div>
+
+            <!-- Addition Items -->
+            <md-divider class="backoff"></md-divider>
+            <md-button class='md-raised md-primary' ng-click="addWish()">Add Wish</md-button>
+            <div style="text-align:center; font-style:italic;">Want something for Christmas?  Let everyone know!</div>
+
+            <md-button class='md-raised md-primary' ng-click="addPurchase()">Add Purchase</md-button>
+            <div style="text-align:center; font-style:italic;">Bought something for someone?  Make sure you keep track of it all!</div>
+
+            <md-button class='md-raised md-primary' ng-click="addIdea()">Add Idea</md-button>
+            <div style="text-align:center; font-style:italic;">Have an idea for a gift but haven't bought it yet?  Add it here!</div>
+
+            <!-- System functionality items -->
+            <md-divider class="backoff"></md-divider>
+            <md-button class="md-warn md-raised" ng-click="closeMenu()">Close</md-button>
+            <div style="text-align:center; font-style:italic;">Close the navigation bar</div>
+
+            <md-button class="md-warn md-raised" ng-click="redirectLogout()">Logout</md-button>
+            <div style="text-align:center; font-style:italic;">Logout (we'll miss you...)</div>
+        </md-list>
     </md-content>
 </md-sidenav>
 {% endmacro %}
