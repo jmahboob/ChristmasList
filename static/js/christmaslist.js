@@ -7,7 +7,7 @@ angular.module('ChristmasList',
     'ngMessages',
     'ngRoute'])
 
-    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http',
+    .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http', '$mdTheming',
         function (
 
             $timeout,
@@ -16,7 +16,8 @@ angular.module('ChristmasList',
             $uibModal,
             $mdDialog,
             $mdSidenav,
-            $http) {
+            $http,
+            $mdTheming) {
 
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
@@ -280,4 +281,12 @@ angular.module('ChristmasList',
 
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
+
+    $mdThemingProvider.theme('dark-green').backgroundPalette('green').dark();
+    $mdThemingProvider.theme('dark-green').primaryPalette('green').dark();
+    /*$mdThemingProvider.enableBrowserColor({
+        theme: 'dark-blue',
+        palette: 'accent',
+        hue: '200'
+    });*/
 });
