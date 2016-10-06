@@ -3,6 +3,12 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 
 **In case anyone is wondering I'm using the Issues tab as a sort of "ToDo" list for the project.  I don't have some sort of split personality disorder where I'm commenting on my own work without realizing it.**
 
+# Current (05 Oct 2016) System Images
+
+![](supporting/xmaslist_mylist.png)
+
+![](supporting/xmaslist_sidenav.png)
+
 # Dependencies (so far)
 
 ## Python
