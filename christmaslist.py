@@ -143,6 +143,9 @@ def open_session():
 """
 
 # Because error handlers are THE MOST IMPORTANT THING
+#####################################################
+### ERROR HANDLERS
+#####################################################
 @app.errorhandler(401)
 def access_restricted(e):
     return render_template("401.html")
@@ -151,6 +154,9 @@ def access_restricted(e):
 def page_not_found(e):
     return render_template("404.html")
 
+#####################################################
+### PRIMARY, DEFAULT, USER MANAGEMENT
+#####################################################
 @app.route("/")
 @login_required
 def root():
@@ -195,6 +201,13 @@ def logout():
     db.session.commit()
     logout_user()
     return render_template("logout.html")
+
+@app.route("/get/currentuser")
+@login_required
+def getCurrentUser():
+    user = current_user
+    return user.first_name + " " + user.last_name
+
 
 @app.route("/create/user", methods=['POST'])
 @login_required

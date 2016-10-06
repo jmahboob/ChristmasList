@@ -22,6 +22,15 @@ angular.module('ChristmasList',
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
 
+            $scope.currentUser = " ";
+            $scope.getCurrentUser = function() {
+                $log.debug("Getting current user");
+                $http.get("get/currentuser").then(function(response) {
+                    $scope.currentUser = response.data;
+                });
+            };
+            $scope.getCurrentUser();
+
             $log.debug("Initializing Controller");
 
             $scope.rowCollection = [

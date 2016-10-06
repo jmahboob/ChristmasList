@@ -5,9 +5,12 @@
             Menu
         </md-button>
         <span flex></span>
-        <h2>
-            <span>Christmas List</span>
-        </h2>
+        <div layout="column" layout-align="end end">
+            <span class="md-headline">Christmas List</span>
+            {% raw %}
+            <span class="md-subhead"><i>{{ currentUser }}</i></span>
+            {% endraw %}
+        </div>
     </div>
 </md-toolbar>
 {% endmacro %}
