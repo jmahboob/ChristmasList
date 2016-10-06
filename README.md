@@ -5,9 +5,9 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 
 # Current (05 Oct 2016) System Images
 
-![](supporting/xmaslist_mylist.png)
+![](supporting/xmaslist_mylist.PNG)
 
-![](supporting/xmaslist_sidenav.png)
+![](supporting/xmaslist_sidenav.PNG)
 
 # Dependencies (so far)
 
