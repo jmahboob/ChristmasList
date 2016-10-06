@@ -48,8 +48,11 @@
         {% block head %}{% endblock %}
     </head>
 
-    <body ng-controller="mainCtrl">
-        <div class="">
+    <!-- Small inline comment for this one -->
+    <!-- md-toolbar must be preceded with layout="column" for all parent elements to fix the navbar at the top -->
+    <!-- Also may (not sure) need to ensure that there is nothing between the md-toolbar and md-content elements, need to check on this one -->
+    <body ng-controller="mainCtrl" layout="column">
+        <div layout="column">
             {% block content %}{% endblock %}
         </div>
     </body>
