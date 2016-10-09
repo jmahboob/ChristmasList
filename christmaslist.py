@@ -214,7 +214,10 @@ def logout():
 @login_required
 def getCurrentUser():
     user = current_user
-    return user.first_name + " " + user.last_name
+    ret = {}
+    ret['id'] = user.id
+    ret['name'] = user.first_name + " " + user.last_name
+    return jsonify(ret)
 
 @app.route("/get/user/<id>")
 @login_required
@@ -224,7 +227,6 @@ def getUserByID(id):
         ret = []
         for user in users:
             ret.append(user.serialize())
-        print ret
         return jsonify(ret)
 
     user = User.query.filter_by(id=id).first()

@@ -5,7 +5,7 @@
 {{ sidenav() }}
 {{ menu() }}
 <md-content flex>
-<div ng-repeat="item in mylist">
+    <div ng-repeat="item in mylist | filter:{requester_id: currentUser.id }">
     {% raw %}
     <md-card md-theme='dark-blue'>
         <md-card-header>

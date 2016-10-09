@@ -22,11 +22,12 @@ angular.module('ChristmasList',
             $scope.currentNavItem = 'myList';
             $scope.item = {firstName: "Null", lastName: "Nulleson"};
 
-            $scope.currentUser = " ";
+            $scope.currentUser = {};
             $scope.getCurrentUser = function() {
                 $log.debug("Getting current user");
                 $http.get("get/currentuser").then(function(response) {
-                    $scope.currentUser = response.data;
+                    $scope.currentUser.name = response.data.name;
+                    $scope.currentUser.id = response.data.id;
                 });
             };
             $scope.getCurrentUser();
