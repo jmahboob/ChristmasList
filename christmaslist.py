@@ -49,6 +49,14 @@ class User(db.Model):
     authenticated = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(500), nullable=False)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email
+        }
+
     def is_active(self):
         return True
 
@@ -207,6 +215,23 @@ def logout():
 def getCurrentUser():
     user = current_user
     return user.first_name + " " + user.last_name
+
+@app.route("/get/user/<id>")
+@login_required
+def getUserByID(id):
+    if id == "all":
+        users = User.query.all()
+        ret = []
+        for user in users:
+            ret.append(user.serialize())
+        print ret
+        return jsonify(ret)
+
+    user = User.query.filter_by(id=id).first()
+    if user:
+        return jsonify(user.serialize())
+    else:
+        return "Invalid User ID"
 
 
 @app.route("/create/user", methods=['POST'])
