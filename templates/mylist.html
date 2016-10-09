@@ -11,17 +11,15 @@
         <md-card-header>
             <md-card-header-text>
                 <md-title>
-                    <h2>{{ item.name }}</h2>
+                    <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
                 </md-title>
                 <md-subhead>
-                    {{ item.cost }}   
+                    ${{ item.cost }}
                 </md-subhead>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
             {{ item.description }}
-            {{ item.requester }}
-            {{ item.granter }}
             <hr>
             <a href="{{ item.link }}">{{ item.link }}</a>
         </md-card-content>

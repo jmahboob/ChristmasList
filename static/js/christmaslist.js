@@ -39,6 +39,25 @@ angular.module('ChristmasList',
                 {firstName: 'Joe', lastName: 'Joelson'}
             ];
 
+            $scope.userID_CACHE = [];
+            $scope.loadUserIDs = function() {
+                $http.get("get/user/all").then(function(response) {
+                    $scope.userID_CACHE = response.data;
+                    $log.debug($scope.userID_CACHE);
+                });
+            }
+            $scope.loadUserIDs();
+
+            $scope.nameFromID = function(id) {
+                for(var i = 0; i < $scope.userID_CACHE.length; i++) {
+                    $log.debug($scope.userID_CACHE[i]);
+                    if ($scope.userID_CACHE[i].id == id) {
+                        return $scope.userID_CACHE[i].first_name + " " + $scope.userID_CACHE[i].last_name;
+                    }
+                }
+                return "No User ID Found";
+            };
+
             $scope.mylist = '';
             $scope.loadlist = function() {
                 $http.get("mylist/loadlist").then(function(response) {
