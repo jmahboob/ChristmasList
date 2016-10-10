@@ -329,6 +329,11 @@ def testEmail():
     mail.send(msg)
     return "Sent"
 
+@app.route("/list")
+@login_required
+def main_list():
+    return render_template("list.html")
+
 @app.route("/mylist")
 @login_required
 def myList():

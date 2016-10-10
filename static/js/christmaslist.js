@@ -83,6 +83,9 @@ angular.module('ChristmasList',
             };
             $scope.loadideas();
 
+            $scope.goList = function() {
+                window.location = "/list";
+            };
 
             $scope.accessMyList = function() {
                 window.location = "/mylist";
