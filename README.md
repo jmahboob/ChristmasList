@@ -20,6 +20,7 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 - Flask-SQLAlchemy >= 2.1
 - Flask-Security >= 1.7.5
 - Flask-Principal >= 0.4.0
+- Flask-Migrate >= 2.0.0
 - SQLAlchemy >= 1.0.15
 
 ## JavaScript/CSS
