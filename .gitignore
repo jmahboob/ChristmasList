@@ -7,4 +7,5 @@ share/
 templates/test.html
 config.py
 *_bak*
+*bak_*
 *.db
