@@ -18,6 +18,8 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 - Flask-WTF >= 0.12
 - Flask-bcrypt >= 0.7.1
 - Flask-SQLAlchemy >= 2.1
+- Flask-Security >= 1.7.5
+- Flask-Principal >= 0.4.0
 - SQLAlchemy >= 1.0.15
 
 ## JavaScript/CSS
