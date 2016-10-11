@@ -12,42 +12,62 @@ import datetime
 import base64 as b64
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, json
-from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+#from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from flask_security import Security, SQLAlchemyUserDatastore, login_required, RoleMixin, UserMixin, current_user, login_user, logout_user
 from flask_wtf import Form
 from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 import flask_bcrypt as bcrypt
 from flask_sqlalchemy import SQLAlchemy
+#from flask_migrate import Migrate
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config.from_object('config')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///christmaslist.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///christmaslist.db'
 db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
+#migrate = Migrate(app, db)
+#login_manager = LoginManager()
+#login_manager.init_app(app)
 mail = Mail(app)
 
 #DB_NAME = "christmaslist"
 #Base = declarative_base()
 
-@login_manager.user_loader
-def user_loader(user_id):
-    return User.query.filter_by(email=user_id).first()
+#@login_manager.user_loader
+#def user_loader(user_id):
+#    return User.query.filter_by(email=user_id).first()
 
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired()])
     password = StringField('Password, validators=[DataRequired()]')
     remember = BooleanField('remember', default=False)
 
-class User(db.Model):
+roles_users = db.Table('roles_users',
+                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+class User(db.Model, UserMixin):
     #__tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
-    authenticated = db.Column(db.Boolean, default=False)
-    password = db.Column(db.String(500), nullable=False)
+    #authenticated = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean(), default=False)
+    current_login_at = db.Column(db.DateTime())
+    last_login_at = db.Column(db.DateTime())
+    current_login_ip = db.Column(db.String(45))
+    last_login_ip = db.Column(db.String(45))
+    login_count = db.Column(db.Integer())
+    password = db.Column(db.String(255), nullable=False)
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
 
     def serialize(self):
         return {
@@ -57,18 +77,20 @@ class User(db.Model):
             'email': self.email
         }
 
-    def is_active(self):
-        return True
+    #def is_active(self):
+    #    return True
 
-    def get_id(self):
-        return self.email
+    #def get_id(self):
+    #    return self.email
 
-    def is_authenticated(self):
-        return self.authenticated
+    #def is_authenticated(self):
+    #    return self.authenticated
 
-    def is_anonymous(self):
-        return False
+    #def is_anonymous(self):
+    #    return False
 
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
 
 
 class Wish(db.Model):
@@ -175,29 +197,31 @@ def root():
 def admin():
     return "Admin Permission Granted"
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    print (current_user)
-    user = current_user
-    if user.is_authenticated:
-        return redirect(url_for("root"))
+#@app.route("/login", methods=['GET', 'POST'])
+#def login():
+#    print (current_user)
+#    user = current_user
+#    if user.is_authenticated:
+#        return redirect(url_for("root"))
 
-    form = LoginForm()
-    if form.validate_on_submit():
-        #user = User.query.get(form.email.data)
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                user.authenticated = True
-                db.session.add(user)
-                db.session.commit()
-                login_user(user, remember=True)
-                return redirect(url_for("root"))
-            else:
-                return "Invalid Password"
-        else:
-            return "Invalid User"
-    return render_template("login.html", form=form)
+#form = LoginForm()
+#    if form.validate_on_submit():
+#        #user = User.query.get(form.email.data)
+#        print "User clicked login button"
+#        user = User.query.filter_by(email=form.email.data).first()
+#        print user
+#        if user:
+#            if bcrypt.check_password_hash(user.password, form.password.data):
+#                user.authenticated = True
+#                db.session.add(user)
+#                db.session.commit()
+#                login_user(user, remember=True)
+#                return redirect(url_for("root"))
+#            else:
+#                return "Invalid Password"
+#        else:
+#            return "Invalid User"
+#    return render_template("login.html", form=form)
 
 @app.route("/logout")
 @login_required
