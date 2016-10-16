@@ -397,7 +397,7 @@ def myIdeas():
 @app.route("/myideas/loadideas")
 @login_required
 def loadIdeas():
-    list = Idea.query.all()
+    list = Idea.query.filter_by(byperson_id=current_user.id).all()
     ret = []
     for idea in list:
         ret.append(idea.serialize())
