@@ -5,6 +5,13 @@
 {{ sidenav() }}
 {{ menu() }}
 <md-content flex>
+    <md-select placeholder="Filter by..." ng-model="user" md-on-open="loadUsers()">
+        {% raw %}
+        <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }}</md-option>
+        {% endraw %}
+    </md-select>
+    <p class="md-caption">This filter doesn't work yet, but you can see everyone in the system!</p>
+
     <div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">
     {% raw %}
     <md-card md-theme='dark-blue'>

@@ -421,12 +421,13 @@ def loadPurchases():
 @login_required
 def familyMembers(function):
     if function == 'load':
-        #return "<center>" + str(User.query.order_by(User.first_name)) + "</center>"
-        users = User.query.order_by(User.first_name).all()
+        users = User.query.order_by(User.id).all()
+        ret = []
         for user in users:
             print user.first_name
-        #return "<center>This will show a list of all the system users</center>"
-        return "printed to debug - check apache error log"
+            if user.id != 0:
+                ret.append(user.serialize())
+        return jsonify(ret)
     elif function == 'page':
         return render_template("familyMembers.html")
     return "Error"

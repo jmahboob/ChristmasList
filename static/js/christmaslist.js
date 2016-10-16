@@ -128,6 +128,13 @@ angular.module('ChristmasList',
                 });
             };*/
 
+            $scope.users = null;
+            $scope.loadUsers = function() {
+                $http.get("familyMembers/load").then(function(response) {
+                    $scope.users = response.data;
+                });
+            };
+
             $scope.showPlaceholder = function(ev) {
                 $mdDialog.show(
                     $mdDialog.alert()
