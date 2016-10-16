@@ -14,29 +14,29 @@
 
         <md-dialog-content class="md-block">
             <div class="md-dialog-content md-block">
-                <md-grid-list md-cols="2" md-gutter="5px" md-row-height="60px">
-                    <md-grid-tile class="md-block">
+                <md-grid-list md-cols="1" md-gutter="5px" md-row-height="60px">
+                    <md-grid-tile class="md-block" md-colspan="1">
                         <md-input-container style="width:90%">
                             <label>Item Name</label>
                             <input ng-model="item.name"/>
                         </md-input-container>
                     </md-grid-tile>
 
-                    <md-grid-tile class="md-block">
+                    <md-grid-tile class="md-block" md-colspan="1">
                         <md-input-container style="width:90%">
                             <label>Item Cost</label>
                             <input ng-model="item.cost" type="number" ng-pattern="/[0-9]+/">
                         </md-input-container>
                     </md-grid-tile>
 
-                    <md-grid-tile md-colspan="2">
+                    <md-grid-tile md-colspan="1">
                         <md-input-container style="width:90%">
                             <label>Item URL/Link</label>
                             <input ng-model="item.url">
                         </md-input-container>
                     </md-grid-tile>
 
-                    <md-grid-tile md-colspan="2">
+                    <md-grid-tile md-colspan="1">
                         <md-input-container style="width:90%">
                             <label>Description</label>
                             <textarea ng-model="item.description"></textarea>
