@@ -34,12 +34,6 @@ angular.module('ChristmasList',
 
             $log.debug("Initializing Controller");
 
-            $scope.rowCollection = [
-                {firstName: 'Jim', lastName: 'Jimmison'},
-                {firstName: 'Tom', lastName: 'Tomlinson'},
-                {firstName: 'Joe', lastName: 'Joelson'}
-            ];
-
             $scope.userID_CACHE = [];
             $scope.loadUserIDs = function() {
                 $http.get("get/user/all").then(function(response) {
@@ -133,6 +127,18 @@ angular.module('ChristmasList',
                     resolve: {}
                 });
             };*/
+
+            $scope.showPlaceholder = function(ev) {
+                $mdDialog.show(
+                    $mdDialog.alert()
+                        .clickOutsideToClose(true)
+                        .title('Button Broken :-(')
+                        .textContent("The site is still under construction, so at the moment this button doesn't work.  I'll let everyone know when it does!")
+                        .ariaLabel('Broken Button')
+                        .ok('Got it!')
+                        .targetEvent(ev)
+                );
+            };
 
             $scope.addWish = function(ev) {
                 $mdDialog.show({
