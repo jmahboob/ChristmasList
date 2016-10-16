@@ -9,3 +9,4 @@ config.py
 *_bak*
 *bak_*
 *.db
+newrelic.ini
