@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import newrelic.agent
+newrelic.agent.initialize('newrelic.ini')
+
 #import os
 #import sys
 import datetime
@@ -333,7 +336,21 @@ def create_idea():
     if request.method == 'GET':
         return render_template('addidea.html')
     else:
-        pass
+        data = request.get_json(force=True)
+        print data
+        print current_user
+
+        new_idea = Idea(
+            name = data['name'],
+            description = data['description'],
+            link = data['url'],
+            created = datetime.datetime.now(),
+            byperson = current_user,
+            forperson = None
+        )
+        db.session.add(new_idea)
+        db.session.commit()
+        return jsonify(data)
 
 @app.route("/test")
 @login_required

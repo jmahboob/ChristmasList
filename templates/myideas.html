@@ -4,7 +4,7 @@
 {% from "menu.html" import menu %}
 {{ menu() }}
 {{ sidenav() }}
-<div ng-repeat="item in myideas">
+<div ng-repeat="item in myideas | filter:{ byperson_id: currentUser.id }">
     {% raw %}
     <md-card md-theme='dark-blue'>
         <md-card-header>
