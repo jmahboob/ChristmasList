@@ -383,7 +383,7 @@ def myList():
 @app.route("/mylist/loadlist")
 @login_required
 def loadList():
-    list = Wish.query.all()
+    list = Wish.query.filter(Wish.requester_id != current_user.id).all()
     ret = []
     for wish in list:
         ret.append(wish.serialize())

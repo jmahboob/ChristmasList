@@ -7,13 +7,14 @@
 <md-content flex>
     <md-select placeholder="Filter by..." ng-model="user" md-on-open="loadUsers()">
         {% raw %}
+        <md-option ng-value="">**Clear Selection**</md-option>
         <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }}</md-option>
         {% endraw %}
     </md-select>
-    <p class="md-caption">This filter doesn't work yet, but you can see everyone in the system!</p>
 
-    <div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">
+    <!--<div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">-->
     {% raw %}
+    <div ng-repeat="item in mylist | filter: { requester_id: user.id }">
     <md-card md-theme='dark-blue'>
         <md-card-header>
             <md-card-header-text>
