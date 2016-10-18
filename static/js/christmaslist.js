@@ -54,9 +54,13 @@ angular.module('ChristmasList',
             };
 
             $scope.mylist = '';
+            $scope.list = '';
             $scope.loadlist = function() {
                 $http.get("mylist/loadlist").then(function(response) {
                     $scope.mylist = response.data;
+                });
+                $http.get("list/loadlist").then(function(response) {
+                    $scope.list = response.data;
                 });
             };
             $scope.loadlist();

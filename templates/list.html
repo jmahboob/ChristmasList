@@ -14,7 +14,7 @@
 
     <!--<div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">-->
     {% raw %}
-    <div ng-repeat="item in mylist | filter: { requester_id: user.id }">
+    <div ng-repeat="item in list | filter: { requester_id: user.id }">
     <md-card md-theme='dark-blue'>
         <md-card-header>
             <md-card-header-text>

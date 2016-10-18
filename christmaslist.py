@@ -375,6 +375,15 @@ def testEmail():
 def main_list():
     return render_template("list.html")
 
+@app.route("/list/loadlist")
+@login_required
+def load_main_list():
+    list = Wish.query.filter(Wish.requester_id != current_user.id).all()
+    ret = []
+    for wish in list:
+        ret.append(wish.serialize())
+    return jsonify(ret)
+
 @app.route("/mylist")
 @login_required
 def myList():
@@ -383,7 +392,7 @@ def myList():
 @app.route("/mylist/loadlist")
 @login_required
 def loadList():
-    list = Wish.query.filter(Wish.requester_id != current_user.id).all()
+    list = Wish.query.filter_by(requester_id = current_user.id).all()
     ret = []
     for wish in list:
         ret.append(wish.serialize())
