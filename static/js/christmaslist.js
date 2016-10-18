@@ -251,6 +251,11 @@ angular.module('ChristmasList',
             }
 
             function AddIdeaController($scope, $mdDialog) {
+                $scope.selectedUserID = null;
+                $scope.updateSelected = function(user) {
+                    $scope.selectedUserID = user;
+                };
+
                 $scope.hide = function() {
                     $mdDialog.hide();
                 };
@@ -267,6 +272,7 @@ angular.module('ChristmasList',
                     answer_json.name = answer[0];
                     answer_json.url = answer[1];
                     answer_json.description = answer[2];
+                    answer_json.forperson = answer[3];
                     $http.post("create/idea", JSON.stringify(answer_json), headers)
                         .success(function(data, status, headers, config) {
                             $log.debug("Added Idea");

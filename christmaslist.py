@@ -345,9 +345,10 @@ def create_idea():
             description = data['description'],
             link = data['url'],
             created = datetime.datetime.now(),
-            byperson = current_user,
-            forperson = None
+            byperson_id = current_user.id,
+            forperson_id = data['forperson']
         )
+        print new_idea.serialize()
         db.session.add(new_idea)
         db.session.commit()
         return jsonify(data)

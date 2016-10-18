@@ -10,14 +10,12 @@
         <md-card-header>
             <md-card-header-text>
                 <md-title>
-                    <h2>{{ item.name }}</h2>
+                    <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id)  }}</i>
                 </md-title>
             </md-card-header-text>
         </md-card-header>
         <md-card-content>
             {{ item.description }}
-            {{ item.requester }}
-            {{ item.granter }}
             <hr>
             <a href="{{ item.link }}">{{ item.link }}</a>
         </md-card-content>

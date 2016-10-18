@@ -35,12 +35,21 @@
                             <textarea ng-model="item.description"></textarea>
                         </md-input-container>
                     </md-grid-tile>
+
+                    <md-grid-tile md-colspan="1">
+                        <md-select placeholder="Idea for..." ng-model="selectedUserID" md-on-open="loadUsers()" ng-model-options="{trackBy: '$value.id'}" style="width:90%">
+                            {% raw %}
+                            <md-option ng-value="user" ng-repeat="user in users" ng-click="updateSelected(user.id)">{{ user.first_name }} {{ user.last_name }}</md-option>
+                            {% endraw %}
+                        </md-select>
+                    </md-grid-tile>
+
                 </md-grid-list>
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class='md-primary md-raised' ng-click="answer([item.name, item.url, item.description])">
+            <md-button class='md-primary md-raised' ng-click="answer([item.name, item.url, item.description, selectedUserID])">
                 Add Idea
             </md-button>
         </md-dialog-actions>
