@@ -16,7 +16,7 @@ import base64 as b64
 
 from flask import Flask, request, jsonify, render_template, redirect, url_for, json
 #from flask_login import LoginManager, login_required, login_user, logout_user, current_user
-from flask_security import Security, SQLAlchemyUserDatastore, login_required, RoleMixin, UserMixin, current_user, login_user, logout_user
+from flask_security import Security, SQLAlchemyUserDatastore, login_required, RoleMixin, UserMixin, current_user, login_user, logout_user, roles_required
 from flask_wtf import Form
 from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
@@ -196,7 +196,7 @@ def root():
     return render_template('index.html')
 
 @app.route("/admin")
-@login_required
+@roles_required('admin')
 def admin():
     return "Admin Permission Granted"
 
@@ -304,6 +304,8 @@ def create_wish():
         db.session.add(new_wish)
         db.session.commit()
 
+        sendEmail(current_user.first_name + " " + current_user.last_name, "Created New Wish")
+
         #session = open_session()
 
         #user = session.query(User).first()
@@ -351,6 +353,9 @@ def create_idea():
         print new_idea.serialize()
         db.session.add(new_idea)
         db.session.commit()
+
+        sendEmail(current_user.first_name + " " + current_user.last_name, "Created new idea")
+
         return jsonify(data)
 
 @app.route("/test")
@@ -361,6 +366,7 @@ def test():
 
 @app.route("/testEmail")
 @login_required
+@roles_required('admin')
 def testEmail():
     msg = Message(
         'Test',
@@ -370,6 +376,15 @@ def testEmail():
     msg.body = "Test Flask-Email"
     mail.send(msg)
     return "Sent"
+
+def sendEmail(title, body):
+    msg = Message(
+        title,
+        sender='xmaslist2016@gmail.com',
+        recipients = ['xmaslist2016@gmail.com']
+    )
+    msg.body = body
+    mail.send(msg)
 
 @app.route("/list")
 @login_required
