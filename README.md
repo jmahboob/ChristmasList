@@ -22,6 +22,13 @@ A small Flask + AngularJS based Christmas list application for my family to use 
 - Flask-Principal >= 0.4.0
 - Flask-Migrate >= 2.0.0
 - SQLAlchemy >= 1.0.15
+- Celery >= 3.1.24
+
+### Celery/Redis Notes
+
+The system is currently using the very Pythonic way of dealing with asynchronous calls.  Redis and a single Celery worker are running in the system and they combine to handle brokered calls to the sendEmail function.
+
+While this seems a bit excessive, it reduces the burden of sending emails tremendously.  Originally emails were being sent to Administrators whenever new items were added to the database.  The synchronous addition of this increased the time for the call in the browser to ~1.35 SECONDS.  Backgrounding the task with the redis/celery combination brings this back down to ~<100ms.
 
 ## JavaScript/CSS
 
