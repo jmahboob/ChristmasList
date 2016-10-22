@@ -168,6 +168,26 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.deleteWish = function(id) {
+                $log.debug(id);
+                var confirm = $mdDialog.confirm()
+                    .title('Remove Wish')
+                    .textContent('Are you sure you want to remove this wish?')
+                    .ariaLabel('remove wish')
+                    .ok('I don\'t want it.')
+                    .cancel('No! Don\'t delete it!');
+
+                $mdDialog.show(confirm).then(function() {
+                    $http.delete('delete/wish/' + id.toString())
+                        .then(function(resposnse) {
+                            $log.debug('Deleted wish');
+                            window.location.reload();
+                        }, function(response) {
+                            $log.debug('Error deleting wish');
+                        });
+                });
+            };
+
             $scope.addPurchase = function(ev) {
                 $mdDialog.show({
                     controller: AddPurchaseController,
@@ -217,6 +237,7 @@ angular.module('ChristmasList',
                     $http.post("create/wish", JSON.stringify(answer_json), headers)
                         .success(function(data, status, headers, config) {
                             $log.debug("Added Wish");
+                            window.location.reload();
                         })
                         .error(function(data, status, headers, config) {
                             $log.debug("Error adding Wish");

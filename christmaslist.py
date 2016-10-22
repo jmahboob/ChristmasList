@@ -129,6 +129,7 @@ class Wish(db.Model):
     requester = db.relationship('User', foreign_keys=[requester_id])
     granter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     granter = db.relationship('User', foreign_keys=[granter_id])
+    deleted = db.Column(db.Integer)
 
     def serialize(self):
         return {
@@ -320,30 +321,30 @@ def create_wish():
             link = data['url'],
             created = datetime.datetime.now(),
             requester = current_user,
-            granter = None
+            granter = None,
+            deleted = 0
         )
         db.session.add(new_wish)
         db.session.commit()
 
         sendEmail(current_user.first_name + " " + current_user.last_name, "Created New Wish")
 
-        #session = open_session()
-
-        #user = session.query(User).first()
-
-        #new_wish = Wish(
-        #    name = data['name'],
-        #    description = data['description'],
-        #    link = data['link'],
-        #    cost = data['cost'],
-        #    created = datetime.datetime.now(),
-        #    requester = user,
-        #    granter = None
-        #)
-        #session.add(new_wish)
-        #session.commit()
-        #session.close()
         return jsonify(data)
+
+@app.route("/delete/wish/<id>", methods=['DELETE'])
+@login_required
+def delete_wish(id):
+    if request.method == 'DELETE':
+        to_delete = Wish.query.filter_by(id=id).first()
+        print current_user.id
+        print to_delete.requester_id
+        if current_user.id != to_delete.requester_id:
+            return "You can't delete other users wishes...you monster."
+        else:
+            to_delete.deleted = 1
+            db.session.commit()
+            return jsonify(to_delete.serialize())
+    return "Error in /delete/wish/<id>"
 
 @app.route("/create/purchase", methods=['POST', 'GET'])
 @login_required
@@ -417,7 +418,7 @@ def main_list():
 @app.route("/list/loadlist")
 @login_required
 def load_main_list():
-    list = Wish.query.filter(Wish.requester_id != current_user.id).all()
+    list = Wish.query.filter((Wish.requester_id != current_user.id) & (Wish.deleted != 1)).all()
     ret = []
     for wish in list:
         ret.append(wish.serialize())
@@ -431,7 +432,7 @@ def myList():
 @app.route("/mylist/loadlist")
 @login_required
 def loadList():
-    list = Wish.query.filter_by(requester_id = current_user.id).all()
+    list = Wish.query.filter((Wish.requester_id == current_user.id) & (Wish.deleted != 1)).all()
     ret = []
     for wish in list:
         ret.append(wish.serialize())
