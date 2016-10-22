@@ -2,8 +2,9 @@
 {% block content %}
 {% from "sidenav.html" import sidenav %}
 {% from "menu.html" import menu %}
-{{ menu() }}
 {{ sidenav() }}
+{{ menu() }}
+<md-content flex>
 <div ng-repeat="item in mypurchases">
     {% raw %}
     <md-card md-theme='dark-blue'>
@@ -28,4 +29,5 @@
     </md-card>
     {% endraw %}
 </div>
+</md-content>
 {% endblock %}

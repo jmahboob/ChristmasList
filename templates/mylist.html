@@ -2,8 +2,8 @@
 {% block content %}
 {% from "sidenav.html" import sidenav %}
 {% from "menu.html" import menu %}
-{{ sidenav() }}
 {{ menu() }}
+{{ sidenav() }}
 <md-content flex>
     <div ng-repeat="item in mylist | filter:{requester_id: currentUser.id }">
     {% raw %}
