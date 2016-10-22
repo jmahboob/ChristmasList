@@ -34,6 +34,9 @@ angular.module('ChristmasList',
 
             $log.debug("Initializing Controller");
 
+            $scope.fab_isOpen = false;
+            $log.debug($scope.fab_isOpen);
+
             $scope.userID_CACHE = [];
             $scope.loadUserIDs = function() {
                 $http.get("get/user/all").then(function(response) {
@@ -339,6 +342,9 @@ angular.module('ChristmasList',
 
     $mdThemingProvider.theme('dark-green').backgroundPalette('green').dark();
     $mdThemingProvider.theme('dark-green').primaryPalette('green').dark();
+
+    $mdThemingProvider.theme('offblue').backgroundPalette('light-blue').dark();
+    $mdThemingProvider.theme('offblue').primaryPalette('deep-purple');
     /*$mdThemingProvider.enableBrowserColor({
         theme: 'dark-blue',
         palette: 'accent',
