@@ -8,7 +8,7 @@
     <md-select placeholder="Filter by..." ng-model="user" md-on-open="loadUsers()">
         {% raw %}
         <md-option ng-value="">**Clear Selection**</md-option>
-        <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }}</md-option>
+        <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }} ({{ user.wish_total }})</md-option>
         {% endraw %}
     </md-select>
 

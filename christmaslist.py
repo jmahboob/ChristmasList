@@ -503,7 +503,11 @@ def familyMembers(function):
         for user in users:
             print user.first_name
             if user.id != 0:
-                ret.append(user.serialize())
+                user_serialized = user.serialize()
+                num_wishes = len(Wish.query.filter((Wish.requester_id == user.id) & (Wish.deleted != 1)).all())
+                user_serialized['wish_total'] = num_wishes
+                ret.append(user_serialized)
+                #ret.append(user.serialize())
         return jsonify(ret)
     elif function == 'page':
         return render_template("familyMembers.html")
