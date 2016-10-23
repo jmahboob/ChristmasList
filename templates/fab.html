@@ -1,5 +1,12 @@
 {% macro fab() %}
 <!-- A Fab toolbar that will be present on ALL pages -->
+<style>
+.lock-size {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+</style>
 <div class="lock-size" layout="row" layout-align="begin end">
     <md-fab-speed-dial md-open="fab_isOpen" md-direction="right" class="md-scale">
         <md-fab-trigger>
