@@ -175,6 +175,7 @@ class Idea(db.Model):
     forperson = db.relationship('User', foreign_keys=[forperson_id])
     byperson_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     byperson = db.relationship('User', foreign_keys=[byperson_id])
+    deleted = db.Column(db.Integer)
 
     def serialize(self):
         return {
@@ -366,12 +367,23 @@ def create_idea():
 
         new_idea = Idea(
             name = data['name'],
-            description = data['description'],
-            link = data['url'],
+            #description = data['description'],
+            #link = data['url'],
             created = datetime.datetime.now(),
             byperson_id = current_user.id,
-            forperson_id = data['forperson']
+            forperson_id = data['forperson'],
+            deleted = 0
         )
+        if not 'description' in data:
+            new_idea.description = ""
+        else:
+            new_idea.description = data['description']
+
+        if not 'url' in data:
+            new_idea.url = ""
+        else:
+            new_idea.url = data['url']
+
         print new_idea.serialize()
         db.session.add(new_idea)
         db.session.commit()
@@ -379,6 +391,22 @@ def create_idea():
         sendEmail.delay(current_user.first_name + " " + current_user.last_name, "Created new idea")
 
         return jsonify(data)
+
+@app.route("/delete/idea/<id>", methods=['DELETE'])
+@login_required
+def delete_idea(id):
+    if request.method == 'DELETE':
+        to_delete = Idea.query.filter_by(id=id).first()
+        print to_delete.name
+        print current_user.id
+        print to_delete.byperson_id
+        if current_user.id != to_delete.byperson_id:
+            return "You can't delete other users ideas...you monster."
+        else:
+            to_delete.deleted = 1
+            db.session.commit()
+            return jsonify(to_delete.serialize())
+    return "Error in /delete/wish/<id>"
 
 @app.route("/test")
 @login_required
@@ -446,7 +474,7 @@ def myIdeas():
 @app.route("/myideas/loadideas")
 @login_required
 def loadIdeas():
-    list = Idea.query.filter_by(byperson_id=current_user.id).all()
+    list = Idea.query.filter((Idea.byperson_id == current_user.id) & (Idea.deleted != 1)).all()
     ret = []
     for idea in list:
         ret.append(idea.serialize())

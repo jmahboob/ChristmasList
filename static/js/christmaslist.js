@@ -212,6 +212,26 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.deleteIdea = function(id) {
+                $log.debug(id);
+                var confirm = $mdDialog.confirm()
+                    .title('Remove Idea')
+                    .textContent('Are you sure you want to remove this idea?')
+                    .ariaLabel('remove idea')
+                    .ok('Yup')
+                    .cancel('No!');
+
+                $mdDialog.show(confirm).then(function() {
+                    $http.delete('delete/idea/' + id.toString())
+                        .then(function(resposnse) {
+                            $log.debug('Deleted idea');
+                            window.location.reload();
+                        }, function(response) {
+                            $log.debug('Error deleting idea');
+                        });
+                });
+            };
+
             $scope.checkSidenav = function() {
                 return $mdSidenav('menu').isOpen();
             }

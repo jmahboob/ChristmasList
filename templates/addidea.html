@@ -1,5 +1,5 @@
 <md-dialog aria-label="Add Idea" flex="75">
-    <form ng-cloak>
+    <form name='addIdeaForm' ng-cloak>
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>
@@ -18,7 +18,7 @@
                     <md-grid-tile class="md-block" md-colspan="1">
                         <md-input-container style="width:90%">
                             <label>Item Name</label>
-                            <input ng-model="item.name"/>
+                            <input ng-model="item.name" required>
                         </md-input-container>
                     </md-grid-tile>
 
@@ -37,7 +37,7 @@
                     </md-grid-tile>
 
                     <md-grid-tile md-colspan="1">
-                        <md-select placeholder="Idea for..." ng-model="selectedUserID" md-on-open="loadUsers()" ng-model-options="{trackBy: '$value.id'}" style="width:90%">
+                         <md-select placeholder="Idea for..." ng-model="selectedUserID" md-on-open="loadUsers()" ng-model-options="{trackBy: '$value.id'}" style="width:90%" required>
                             {% raw %}
                             <md-option ng-value="user" ng-repeat="user in users" ng-click="updateSelected(user.id)">{{ user.first_name }} {{ user.last_name }}</md-option>
                             {% endraw %}
@@ -49,7 +49,7 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
-            <md-button class='md-primary md-raised' ng-click="answer([item.name, item.url, item.description, selectedUserID])">
+            <md-button ng-disabled='addIdeaForm.$invalid' class='md-primary md-raised' ng-click="answer([item.name, item.url, item.description, selectedUserID])">
                 Add Idea
             </md-button>
         </md-dialog-actions>
