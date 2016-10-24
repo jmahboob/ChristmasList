@@ -5,10 +5,7 @@ angular.module('ChristmasList',
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'ngRoute',
-    'ngSanitize',
-    'ngMdIcons',
-    'mdDataTable'])
+    'ngRoute'])
 
     .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http', '$mdTheming',
         function (
