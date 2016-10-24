@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% block content %}
+{% from "sidenav.html" import sidenav %}
+{% from "menu.html" import menu %}
+{{ sidenav() }}
+{{ menu() }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table-templates.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.0/angular-material-icons.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table-style.css"/>
+
+<md-content flex>
+    <mdt-table
+        mdt-row="{
+            'data': userID_TEST,
+            'column-keys': ['id', 'first_name', 'last_name', 'email']
+        }">
+
+        <mdt-header-row>
+            <mdt-column>ID</mdt-column>
+            <mdt-column>First Name</mdt-column>
+            <mdt-column>Last Name</mdt-column>
+            <mdt-column>E-Mail</mdt-column>
+        </mdt-header-row>
+    </mdt-table>
+</md-content>
+{% endblock %}

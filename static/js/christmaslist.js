@@ -5,7 +5,10 @@ angular.module('ChristmasList',
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'ngRoute'])
+    'ngRoute',
+    'ngSanitize',
+    'ngMdIcons',
+    'mdDataTable'])
 
     .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http', '$mdTheming',
         function (
@@ -45,6 +48,18 @@ angular.module('ChristmasList',
                 });
             }
             $scope.loadUserIDs();
+
+            $scope.userID_TEST = [ {
+                id: 0,
+                first_name: 'Test1',
+                last_name: 'Test2',
+                email: 'TestEmail'
+                }, {
+                id: 1,
+                first_name: 'Another1',
+                last_name: 'Another2',
+                email: 'AnotherEmail'
+            }];
 
             $scope.nameFromID = function(id) {
                 for(var i = 0; i < $scope.userID_CACHE.length; i++) {
@@ -87,6 +102,10 @@ angular.module('ChristmasList',
             $scope.goList = function() {
                 window.location = "/list";
             };
+
+            $scope.accessMyTracking = function() {
+                window.location = "/mytracking"
+            }
 
             $scope.accessMyList = function() {
                 window.location = "/mylist";

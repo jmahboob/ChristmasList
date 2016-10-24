@@ -452,6 +452,11 @@ def load_main_list():
         ret.append(wish.serialize())
     return jsonify(ret)
 
+@app.route("/mytracking")
+@login_required
+def myTracking():
+    return render_template('mytracking.html')
+
 @app.route("/mylist")
 @login_required
 def myList():
