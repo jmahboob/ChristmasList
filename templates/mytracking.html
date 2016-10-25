@@ -17,15 +17,19 @@
         <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
             <thead md-head md-order="query.order">
                 <tr md-row>
-                    <th md-column><span>Name</span></th>
-                    <th md-column><span>E-Mail</span></th>
+                    <b><th md-column><span>Name</span></th>
+                    <th md-column><span>Claimed</span></th>
+                    <th md-column><span>Purchased</span></th>
+                    <th md-column><span>Total</span></th></b>
                 </tr>
             </thead>
             <tbody md-body>
                 <tr md-row md-select="user" md-select-id="id" md-auto-select ng-repeat="user in userID_CACHE">
                     {% raw %}
                     <td md-cell>{{ user.first_name }} {{ user.last_name }}</td>
-                    <td md-cell>{{ user.email }}</td>
+                    <td md-cell> 0 </td>
+                    <td md-cell> 0 </td>
+                    <td md-cell> 0 </td>
                     {% endraw %}
                 </tr>
             </tbody>

@@ -8,7 +8,7 @@
 }
 </style>
 <div class="lock-size" layout="row" layout-align="begin end">
-    <md-fab-speed-dial md-open="fab_isOpen" md-direction="right" class="md-scale">
+    <md-fab-speed-dial md-open="fab_isOpen" md-direction="up" class="md-scale">
         <md-fab-trigger>
             <md-button aria-label="menu" class="md-fab md-raised md-warn" >
                 +
@@ -17,13 +17,18 @@
 
         <md-fab-actions>
             <md-button aria-label="fabaddwish" class="md-fab md-raised md-mini" ng-click="addWish()">
-                <md-tooltip md-direction="top" md-visible="fab_isOpen">Add Wish</md-tooltip>
+                <md-tooltip md-direction="right" md-visible="fab_isOpen">Add Wish</md-tooltip>
                     W
                 </md-tooltip>
             </md-button>
             <md-button aria-label="fabaddidea" class="md-fab md-raised md-mini" ng-click="addIdea()">
                 <md-tooltip md-direction="right" md-visible="fab_isOpen">Add Idea</md-tooltip>
                     I
+                </md-tooltip>
+            </md-button>
+            <md-button aria-label="fabaddpurchase" class="md-fab md-raised md-mini" ng-click="">
+                <md-tooltip md-direction="right" md-visible="fab_isOpen">Add Purchase</md-tooltip>
+                    P
                 </md-tooltip>
             </md-button>
         </md-fab-actions>
