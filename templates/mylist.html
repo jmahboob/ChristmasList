@@ -5,6 +5,16 @@
 {{ menu() }}
 {{ sidenav() }}
 <md-content flex>
+    <md-card md-theme='blue'>
+        <md-card-content>
+            {% raw %}
+            You currently want <b><i>{{ myItemCount }}</b></i> items totalling <b><i>{{ myItemTotal }}</b></i> dollars
+            {% endraw %}
+        </md-card-content>
+    </md-card>
+
+    <md-divider></md-divider>
+
     <div ng-repeat="item in mylist | filter:{requester_id: currentUser.id }">
     {% raw %}
     <md-card md-theme='dark-blue'>

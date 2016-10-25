@@ -4,6 +4,7 @@
   "description": "A simple Christmas list application.",
   "main": "static/js/christmaslist.js",
   "dependencies": {
+    "angular-material-data-table": "^0.10.9",
     "angular-smart-table": "^2.1.8"
   },
   "devDependencies": {},

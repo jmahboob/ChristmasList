@@ -276,7 +276,8 @@ def getUserByID(id):
         users = User.query.all()
         ret = []
         for user in users:
-            ret.append(user.serialize())
+            if user.id != 0:
+                ret.append(user.serialize())
         return jsonify(ret)
 
     user = User.query.filter_by(id=id).first()
@@ -456,6 +457,19 @@ def load_main_list():
 @login_required
 def myTracking():
     return render_template('mytracking.html')
+
+@app.route("/mytracking/load")
+@login_required
+def loadTracking():
+    # Return an array with:
+    #   first_name + last_name
+    #   email
+    #   claimed items
+    #   purchased items
+    #   value
+
+    #   Right now we're just returning basic stuff, we'll fill this out later
+    return ""
 
 @app.route("/mylist")
 @login_required

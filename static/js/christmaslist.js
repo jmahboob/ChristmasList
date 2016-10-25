@@ -5,7 +5,8 @@ angular.module('ChristmasList',
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
-    'ngRoute'])
+    'ngRoute',
+    'md.data.table'])
 
     .controller('mainCtrl', ['$timeout', '$scope', '$log', '$uibModal', '$mdDialog', '$mdSidenav', '$http', '$mdTheming',
         function (
@@ -38,6 +39,7 @@ angular.module('ChristmasList',
             $log.debug($scope.fab_isOpen);
 
             $scope.userID_CACHE = [];
+            $scope.selected = [];
             $scope.loadUserIDs = function() {
                 $http.get("get/user/all").then(function(response) {
                     $scope.userID_CACHE = response.data;
@@ -70,9 +72,15 @@ angular.module('ChristmasList',
 
             $scope.mylist = '';
             $scope.list = '';
+            $scope.myItemCount = 0;
+            $scope.myItemTotal = 0;
             $scope.loadlist = function() {
                 $http.get("mylist/loadlist").then(function(response) {
                     $scope.mylist = response.data;
+                    $scope.myItemCount= $scope.mylist.length;
+                    for (i = 0; i < $scope.mylist.length; i++) {
+                        $scope.myItemTotal += $scope.mylist[i].cost;
+                    }
                 });
                 $http.get("list/loadlist").then(function(response) {
                     $scope.list = response.data;

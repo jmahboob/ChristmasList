@@ -12,18 +12,25 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table-style.css"/>
 
 <md-content flex>
-    <mdt-table
-        mdt-row="{
-            'data': userID_TEST,
-            'column-keys': ['id', 'first_name', 'last_name', 'email']
-        }">
 
-        <mdt-header-row>
-            <mdt-column>ID</mdt-column>
-            <mdt-column>First Name</mdt-column>
-            <mdt-column>Last Name</mdt-column>
-            <mdt-column>E-Mail</mdt-column>
-        </mdt-header-row>
-    </mdt-table>
+    <md-table-container>
+        <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
+            <thead md-head md-order="query.order">
+                <tr md-row>
+                    <th md-column><span>Name</span></th>
+                    <th md-column><span>E-Mail</span></th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row md-select="user" md-select-id="id" md-auto-select ng-repeat="user in userID_CACHE">
+                    {% raw %}
+                    <td md-cell>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td md-cell>{{ user.email }}</td>
+                    {% endraw %}
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+
 </md-content>
 {% endblock %}
