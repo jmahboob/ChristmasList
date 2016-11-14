@@ -317,15 +317,36 @@ def create_wish():
         print current_user
 
         new_wish = Wish(
-            name = data['name'],
-            description = data['description'],
-            cost = data['cost'],
-            link = data['url'],
+            #name = data['name'],
+            #description = data['description'],
+            #cost = data['cost'],
+            #link = data['url'],
             created = datetime.datetime.now(),
             requester = current_user,
             granter = None,
             deleted = 0
         )
+
+        if not 'name' in data:
+            new_wish.name = ""
+        else:
+            new_wish.name = data['name']
+
+        if not 'description' in data:
+            new_wish.description = ""
+        else:
+            new_wish.description = data['description']
+
+        if not 'cost' in data:
+            new_wish.cost = 0
+        else:
+            new_wish.cost = data['cost']
+
+        if not 'url' in data:
+            new_wish.link = ""
+        else:
+            new_wish.link = data['url']
+
         db.session.add(new_wish)
         db.session.commit()
 
