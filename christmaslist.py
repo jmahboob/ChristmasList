@@ -6,6 +6,7 @@ newrelic.agent.initialize('newrelic.ini')
 #import os
 #import sys
 import datetime
+import logging
 
 #from sqlalchemy import Column, ForeignKey, Integer, String, Numeric, DateTime, Boolean
 #from sqlalchemy.ext.declarative import declarative_base
@@ -27,20 +28,12 @@ from flask_mail import Mail, Message
 
 from celery import Celery
 
-"""
-def make_celery(app):
-    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'],
-                    broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
-    TaskBase = celery.Task
-     class ContextTask(TaskBase):
-        abstract = True
-         def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    celery.Task = ContextTask
-    return celery
-"""
+logger = logging.getLogger('christmaslist')
+hdlr = logging.FileHandler('/var/log/christmaslist/christmaslist.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -354,6 +347,27 @@ def create_wish():
 
         return jsonify(data)
 
+@app.route("/update/wish/<id>", methods=['POST', 'GET'])
+@login_required
+def update_wish(id):
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        wish = Wish.query.filter((Wish.requester_id == current_user.id) & (Wish.id == id)).first()
+
+        logger.debug(wish.serialize())
+        wish.name = data['name']
+        wish.cost = data['cost']
+        wish.description = data['description']
+        wish.link = data['url']
+        logger.debug(wish.serialize())
+
+        db.session.commit()
+        return "Wish Updated"
+    elif request.method == 'GET':
+        logger.debug("Sending updatewish.html to client")
+        return render_template('updatewish.html')
+    return "Not sure what happened"
+
 @app.route("/delete/wish/<id>", methods=['DELETE'])
 @login_required
 def delete_wish(id):
@@ -384,8 +398,8 @@ def create_idea():
         return render_template('addidea.html')
     else:
         data = request.get_json(force=True)
-        print data
-        print current_user
+        logger.debug(data)
+        logger.debug(current_user)
 
         new_idea = Idea(
             name = data['name'],
@@ -404,9 +418,10 @@ def create_idea():
         if not 'url' in data:
             new_idea.url = ""
         else:
-            new_idea.url = data['url']
+            new_idea.link = data['url']
 
-        print new_idea.serialize()
+        logger.debug(new_idea.serialize())
+
         db.session.add(new_idea)
         db.session.commit()
 
@@ -428,7 +443,7 @@ def delete_idea(id):
             to_delete.deleted = 1
             db.session.commit()
             return jsonify(to_delete.serialize())
-    return "Error in /delete/wish/<id>"
+    return "Error in /delete/idea/<id>"
 
 @app.route("/test")
 @login_required
@@ -501,6 +516,15 @@ def myList():
 @login_required
 def loadList():
     list = Wish.query.filter((Wish.requester_id == current_user.id) & (Wish.deleted != 1)).all()
+    ret = []
+    for wish in list:
+        ret.append(wish.serialize())
+    return jsonify(ret)
+
+@app.route("/mylist/loadwish/<id>")
+@login_required
+def loadWishByID(id):
+    list = Wish.query.filter((Wish.requester_id == current_user.id) & (Wish.id == id)).all()
     ret = []
     for wish in list:
         ret.append(wish.serialize())

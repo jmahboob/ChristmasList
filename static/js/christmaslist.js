@@ -188,7 +188,20 @@ angular.module('ChristmasList',
                     preserveScope: true,
                     targetEvent: ev,
                     parent: angular.element(document.body),
+                    clickOutsideToClose: false
+                });
+            };
+
+            $scope.updateWish = function(id) {
+                $mdDialog.show({
+                    controller: UpdateWishController,
+                    templateUrl: 'update/wish/' + id.toString(),
+                    scope: $scope,
+                    preserveScope: true,
+                    //targetEvent: ev,
+                    parent: angular.element(document.body),
                     clickOutsideToClose: false,
+                    locals: {id: id}
                 });
             };
 
@@ -285,6 +298,44 @@ angular.module('ChristmasList',
                         })
                         .error(function(data, status, headers, config) {
                             $log.debug("Error adding Wish");
+                        });
+                    $mdDialog.hide(answer);
+                };
+            };
+
+            var UpdateWishController = function($scope, $mdDialog, id) {
+
+                $log.debug("Inside UpdateWishController");
+
+                $http.get("mylist/loadwish/" + id.toString()).then(function(response) {
+                    $scope.item = response.data[0];
+                    $log.debug($scope.item);
+                });
+
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.cancel = function() {
+                    $log.debug("Update Wish Controller - Cancelled");
+                    $mdDialog.cancel();
+                };
+
+                $scope.answer = function(answer) {
+                    $log.debug("Updating Wish - " + answer);
+                    var headers = {'Content-Type': 'application/json'};
+                    var answer_json = {};
+                    answer_json.name = answer[0];
+                    answer_json.cost = answer[1];
+                    answer_json.url = answer[2];
+                    answer_json.description = answer[3];
+                    $http.post("update/wish/" + id.toString(), JSON.stringify(answer_json), headers)
+                        .success(function(data, status, headers, config) {
+                            $log.debug("Updated Wish");
+                            window.location.reload();
+                        })
+                        .error(function(data, status, headers, config) {
+                            $log.debug("Error Updating Wish");
                         });
                     $mdDialog.hide(answer);
                 };
