@@ -383,6 +383,16 @@ def delete_wish(id):
             return jsonify(to_delete.serialize())
     return "Error in /delete/wish/<id>"
 
+@app.route("/claim/wish/<id>", methods=['POST'])
+@login_required
+def claim_wish(id):
+    if request.method == 'POST':
+        to_claim = Wish.query.filter_by(id=id).first()
+        to_claim.granter_id = current_user.id
+        db.session.commit()
+        return "Claimed Wish"
+    return "Error in /claim/wish/<id>"
+
 @app.route("/create/purchase", methods=['POST', 'GET'])
 @login_required
 def create_purchase():

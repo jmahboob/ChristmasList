@@ -48,6 +48,7 @@ angular.module('ChristmasList',
             }
             $scope.loadUserIDs();
 
+
             $scope.userID_TEST = [ {
                 id: 0,
                 first_name: 'Test1',
@@ -166,6 +167,10 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.getUserByID = function(id) {
+                return $scope.userID_CACHE[id-1].first_name.toString() + " " + $scope.userID_CACHE[id-1].last_name.toString();
+            };
+
             $scope.showPlaceholder = function(ev) {
                 $mdDialog.show(
                     $mdDialog.alert()
@@ -221,6 +226,26 @@ angular.module('ChristmasList',
                             window.location.reload();
                         }, function(response) {
                             $log.debug('Error deleting wish');
+                        });
+                });
+            };
+
+            $scope.claimWish = function(id) {
+                $log.debug(id);
+                var confirm = $mdDialog.confirm()
+                    .title('Claim Wish')
+                    .textContent('Click OK to claim this wish (don\'t worry, you can undo it later).')
+                    .ariaLabel('claim wish')
+                    .ok('Claim!')
+                    .cancel('Cancel');
+
+                $mdDialog.show(confirm).then(function() {
+                    $http.post('claim/wish/' + id.toString())
+                        .then(function(response) {
+                            $log.debug('Claimed wish');
+                            window.location.reload();
+                        }, function(response) {
+                            $log.debug('Error claiming wish');
                         });
                 });
             };

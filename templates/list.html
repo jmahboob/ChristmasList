@@ -36,7 +36,8 @@
             </md-card>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button class='md-raised' ng-click="showPlaceholder()">Claim</md-button>
+            <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
+            <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
         </md-card-actions>
     </md-card>
     {% endraw %}
