@@ -5,7 +5,7 @@
 {{ sidenav() }}
 {{ menu() }}
 <md-content flex>
-    <md-select placeholder="Filter by..." ng-model="user" md-on-open="loadUsers()">
+    <md-select placeholder="Filter by..." ng-model="filter_user" md-on-open="loadUsers()">
         {% raw %}
         <md-option ng-value="">**Clear Selection**</md-option>
         <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }} ({{ user.wish_total }})</md-option>
@@ -14,33 +14,70 @@
 
     <!--<div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">-->
     {% raw %}
+    <!--
     <div ng-repeat="item in list | filter: { requester_id: user.id }">
-    <md-card md-theme='dark-blue'>
-        <md-card-header>
-            <md-card-header-text>
-                <md-title>
-                    <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
-                </md-title>
-                <md-subhead>
-                    ${{ item.cost }}
-                </md-subhead>
-            </md-card-header-text>
-        </md-card-header>
-        <md-card-content>
-            {{ item.description }}
-            <hr>
-            <md-card md-theme='offblue'>
-                <md-card-content>
-                    <a href="{{ item.link }}">{{ item.link }}</a>
-                </md-card-content>
-            </md-card>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
-            <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
-        </md-card-actions>
-    </md-card>
+        <md-card md-theme='dark-blue'>
+            <md-card-header>
+                <md-card-header-text>
+                    <md-title>
+                        <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
+                    </md-title>
+                    <md-subhead>
+                        ${{ item.cost }}
+                    </md-subhead>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                {{ item.description }}
+                <hr>
+                <md-card md-theme='offblue'>
+                    <md-card-content>
+                        <a href="{{ item.link }}">{{ item.link }}</a>
+                    </md-card-content>
+                </md-card>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
+                <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+    -->
+
+    <div>
+        <md-grid-list md-cols-xl="3" md-cols-lg="2" md-cols="1" md-row-height="2:1" md-gutter="12px">
+            <!--<md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | filter: { requester_id: filter_user.id }">-->
+            <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | wish_user:filter_user">
+                <md-card md-theme='dark-blue' layout-fill>
+                    <md-card-header>
+                        <md-card-header-text>
+                            <md-title>
+                                <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
+                            </md-title>
+                            <md-subhead>
+                                ${{ item.cost }}
+                            </md-subhead>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        {{ item.description }}
+                        <hr>
+                        <md-card md-theme='offblue'>
+                            <md-card-content>
+                                <a href="{{ item.link }}">{{ item.link }}</a>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
+                        <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-grid-tile>
+        </md-grid-list>
+    </div>
+
     {% endraw %}
-</div>
+    
 </md-content>
 {% endblock %}

@@ -163,6 +163,7 @@ angular.module('ChristmasList',
             $scope.users = null;
             $scope.loadUsers = function() {
                 $http.get("familyMembers/load").then(function(response) {
+                    console.log(response.data);
                     $scope.users = response.data;
                 });
             };
@@ -465,6 +466,7 @@ angular.module('ChristmasList',
     };
 })
 
+
 .config(function($routeProvider) {
     $routeProvider
         .when("/test", {
@@ -477,6 +479,7 @@ angular.module('ChristmasList',
             templateUrl: "../../templates/myList.html"
         });
 })
+
 
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('dark-blue').backgroundPalette('blue').dark();
@@ -491,4 +494,26 @@ angular.module('ChristmasList',
         palette: 'accent',
         hue: '200'
     });*/
+})
+
+
+.filter('wish_user', function() {
+    console.log("Inside filter wish_user");
+
+    return function(wishes, user) {
+        var filtered = [];
+
+        if (!user) {
+            return wishes;
+        }
+
+        for (i = 0; i < wishes.length; i++) {
+            if (wishes[i]['requester_id'] == user['id']) {
+                filtered.push(wishes[i]);
+            }
+        }
+
+        return filtered;
+    };
+
 });
