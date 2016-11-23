@@ -2,6 +2,7 @@ angular.module('ChristmasList',
 
     ['smart-table',
     'ui.bootstrap',
+    'vAccordion',
     'ngAnimate',
     'ngMaterial',
     'ngMessages',
