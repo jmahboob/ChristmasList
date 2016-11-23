@@ -5,6 +5,7 @@
 {{ sidenav() }}
 {{ menu() }}
 <md-content flex>
+<!--
 <div ng-repeat="item in myideas | filter:{ byperson_id: currentUser.id }">
     {% raw %}
     <md-card md-theme='dark-blue'>
@@ -31,5 +32,37 @@
     </md-card>
     {% endraw %}
 </div>
+-->
+
+    <div>
+    {% raw %}
+        <md-grid-list md-cols-xl="3" md-cols-lg="2" md-cols="1" md-row-height="2:1" md-row-height-xs="3:4" md-gutter="12px">
+            <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in myideas | filter:{byperson_id: currentUser.id}">
+                <md-card md-theme="dark-blue" layout-fill>
+                    <md-card-header>
+                        <md-card-header-text>
+                            <md-title>
+                                <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id) }}</i>
+                            </md-title>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        {{ item.description }}
+                        <hr>
+                        <md-card md-theme="offblue">
+                            <md-card-content>
+                                <a href="{{ item.link }}">{{ item.link }}</a>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised" ng-click="showPlaceholder()">Update</md-button>
+                        <md-button class="md-raised" ng-click="deleteIdea(item.id)">Remove</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-grid-tile>
+        </md-grid-list>
+    {% endraw %}
+    </div>
 </md-content>
 {% endblock %}
