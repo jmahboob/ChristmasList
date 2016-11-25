@@ -4,37 +4,98 @@
 {% from "menu.html" import menu %}
 {{ sidenav() }}
 {{ menu() }}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table-templates.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.0/angular-material-icons.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/md-data-table/1.8.0/md-data-table-style.css"/>
-
 <md-content flex>
 
-    <md-table-container>
-        <table md-table md-row-select multiple ng-model="selected" md-progress="promise">
-            <thead md-head md-order="query.order">
-                <tr md-row>
-                    <b><th md-column><span>Name</span></th>
-                    <th md-column><span>Claimed</span></th>
-                    <th md-column><span>Purchased</span></th>
-                    <th md-column><span>Total</span></th></b>
-                </tr>
-            </thead>
-            <tbody md-body>
-                <tr md-row md-select="user" md-select-id="id" md-auto-select ng-repeat="user in userID_CACHE">
+<div ng-repeat="item in mypurchases">
+    {% raw %}
+    <md-card md-theme='dark-blue'>
+        <md-card-header>
+            <md-card-header-text>
+                <md-title>
+                    <h2>{{ item.name }}</h2>
+                </md-title>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            {{ item.description }}
+            {{ item.requester }}
+            {{ item.granter }}
+            <hr>
+            <a href="{{ item.link }}">{{ item.link }}</a>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class='md-raised'>Update</md-button>
+            <md-button class='md-raised'>Remove</md-button>
+        </md-card-actions>
+    </md-card>
+    {% endraw %}
+</div>
+
+<md-card>
+    <md-card-content>
+        <v-accordion class="vAccordion--default">
+            <v-pane ng-repeat="user in userID_CACHE" expanded="pane.isExpanded">
+                <v-pane-header>
                     {% raw %}
-                    <td md-cell>{{ user.first_name }} {{ user.last_name }}</td>
-                    <td md-cell> 0 </td>
-                    <td md-cell> 0 </td>
-                    <td md-cell> 0 </td>
+                    {{ user.first_name }} {{ user.last_name }}
                     {% endraw %}
-                </tr>
-            </tbody>
-        </table>
-    </md-table-container>
+                </v-pane-header>
+                <v-pane-content>
+                    {% raw %}
+                    <md-content>
+                        <md-tabs md-dynamic-height md-border-bottom style="background: white;">
+                            <md-tab label="claims">
+
+                                <md-card>
+                                    <div ng-repeat="claim in list | filter:{requester_id: user.id}">
+                                        <md-content>
+                                            <md-list flex>
+                                                <md-list-item ng-if="claim.granter_id == currentUser.id" class="md-3-line">
+                                                    <div class="md-list-item-text" layout="column">
+                                                        <h3>{{ claim.name }}</h3>
+                                                        <h4>{{ claim.cost }}</h4>
+                                                        <p>{{ claim.description }}</p>
+                                                    </div>
+                                                </md-list-item>
+                                            </md-list>
+                                        </md-content>
+                                    </div>
+                                </md-card>
+
+                            </md-tab>
+                            <md-tab label="ideas">
+
+                                <md-card>
+                                    <div ng-repeat="idea in myideas | filter:{forperson_id: user.id}">
+                                        <md-content>
+                                            <md-list flex>
+                                                <md-list-item ng-if="idea.forperson_id == user.id" class="md-3-line">
+                                                    <div class="md-list-item-text" layout="column">
+                                                        <h3>{{ idea.name }}</h3>
+                                                        <h4>{{ idea.cost }}</h4>
+                                                        <p>{{ idea.description }}</p>
+                                                    </div>
+                                                </md-list-item>
+                                            </md-list>
+                                        </md-content>
+                                    </div>
+
+                            </md-tab>
+                            <md-tab label="purchases">
+
+                                <div ng-repeat="purchase in mypurchases | filter:{purchase}">
+                                    {{ purchase.name }}
+                                </div>
+
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
+                    {% endraw %}
+                </v-pane-content>
+            </v-pane>
+        </v-accordion>
+    </md-card-content>
+</md-card>
 
 </md-content>
 {% endblock %}

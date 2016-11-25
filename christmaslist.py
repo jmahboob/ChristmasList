@@ -91,7 +91,7 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'email': self.email
+            'email': self.email,
         }
 
     #def is_active(self):
@@ -123,6 +123,7 @@ class Wish(db.Model):
     granter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     granter = db.relationship('User', foreign_keys=[granter_id])
     deleted = db.Column(db.Integer)
+    purchased = db.Column(db.Boolean)
 
     def serialize(self):
         return {
@@ -133,7 +134,8 @@ class Wish(db.Model):
             'cost': self.cost,
             'created': self.created,
             'requester_id': self.requester_id,
-            'granter_id': self.granter_id
+            'granter_id': self.granter_id,
+            'purchased': self.purchased
         }
 
 class Purchase(db.Model):
@@ -145,6 +147,10 @@ class Purchase(db.Model):
     created = db.Column(db.DateTime)
     purchaser_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     purchaser = db.relationship('User', foreign_keys=[purchaser_id])
+    wish_id = db.Column(db.Integer, db.ForeignKey('wish.id'))
+    wish = db.relationship('Wish', foreign_keys=[wish_id])
+    idea_id = db.Column(db.Integer, db.ForeignKey('idea.id'))
+    idea = db.relationship('Idea', foreign_keys=[idea_id])
 
     def serialize(self):
         return {
@@ -169,6 +175,7 @@ class Idea(db.Model):
     byperson_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     byperson = db.relationship('User', foreign_keys=[byperson_id])
     deleted = db.Column(db.Integer)
+    purchased = db.Column(db.Boolean)
 
     def serialize(self):
         return {
@@ -178,7 +185,8 @@ class Idea(db.Model):
             'link': self.link,
             'created': self.created,
             'forperson_id': self.forperson_id,
-            'byperson_id': self.byperson_id
+            'byperson_id': self.byperson_id,
+            'purchased': self.purchased
         }
 
 
@@ -393,13 +401,23 @@ def claim_wish(id):
         return "Claimed Wish"
     return "Error in /claim/wish/<id>"
 
-@app.route("/create/purchase", methods=['POST', 'GET'])
+@app.route("/create/purchase/<type>/<id>", methods=['POST', 'GET'])
 @login_required
-def create_purchase():
+def create_purchase(type, id):
     if request.method == 'GET':
-        return render_template('addpurchase.html')
+        if type == "wish":
+            wish = Wish.query.filter_by(id=id).first()
+            wish.purchased = wish.purchased ^ 1
+            db.session.commit()
+        elif type == "idea":
+            idea = Idea.query.filter_by(id=id).first()
+            idea.purchased = idea.purchased ^ 1
+            db.session.commit()
+        return ""
     else:
         pass
+
+    return ""
 
 @app.route("/create/idea", methods=['POST', 'GET'])
 @login_required

@@ -6,96 +6,121 @@
 {{ menu() }}
 <md-content flex>
 
-<div ng-repeat="item in mypurchases">
+    <md-select placeholder="Filter by..." ng-model="filter_user" md-on-open="loadUsers()">
+        {% raw %}
+        <md-option ng-value="">**Clear Selection**</md-option>
+        <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name  }} {{ user.last_name  }} ({{ user.wish_total  }})</md-option>
+        {% endraw %}
+     </md-select>
+
+
+    <div hide-gt-md ng-repeat="item in myideas |  purchase_user: filter_user.id:currentUser.id">
+        {% raw %}
+        <md-card md-theme='dark-blue'>
+            <md-card-header>
+                <md-card-header-text>
+                    <md-title>
+                        <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id)  }}</i>
+                    </md-title>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                {{ item.description }}
+                <hr>
+                <md-card md-theme='offblue'>
+                    <md-card-content>
+                        <a href="{{ item.link }}">{{ item.link }}</a>
+                    </md-card-content>
+                </md-card>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class='md-raised' ng-click="showPlaceholder()">Update</md-button>
+                <md-button class='md-raised' ng-click="deleteIdea(item.id)">Remove</md-button>
+            </md-card-actions>
+        </md-card>
+        {% endraw %}
+    </div>
+    <div hide-gt-md ng-repeat="item in list |  purchase_user: filter_user.id:currentUser.id">
+        {% raw %}
+        <md-card md-theme='dark-blue'>
+            <md-card-header>
+                <md-card-header-text>
+                    <md-title>
+                        <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id)  }}</i>
+                    </md-title>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                {{ item.description }}
+                <hr>
+                <md-card md-theme='offblue'>
+                    <md-card-content>
+                        <a href="{{ item.link }}">{{ item.link }}</a>
+                    </md-card-content>
+                </md-card>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class='md-raised' ng-click="showPlaceholder()">Update</md-button>
+                <md-button class='md-raised' ng-click="deleteIdea(item.id)">Remove</md-button>
+            </md-card-actions>
+        </md-card>
+        {% endraw %}
+    </div>
+
+
+    <div hide-sm hide-xs hide-md>
     {% raw %}
-    <md-card md-theme='dark-blue'>
-        <md-card-header>
-            <md-card-header-text>
-                <md-title>
-                    <h2>{{ item.name }}</h2>
-                </md-title>
-            </md-card-header-text>
-        </md-card-header>
-        <md-card-content>
-            {{ item.description }}
-            {{ item.requester }}
-            {{ item.granter }}
-            <hr>
-            <a href="{{ item.link }}">{{ item.link }}</a>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button class='md-raised'>Update</md-button>
-            <md-button class='md-raised'>Remove</md-button>
-        </md-card-actions>
-    </md-card>
+        <md-grid-list md-cols-xl="3" md-cols-lg="2" md-cols-md="2" md-cols="2" md-row-height="2:1" md-row-height-xs="3:4" md-gutter="12px">
+            <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in myideas | purchase_user: filter_user.id:currentUser.id">
+                <md-card md-theme="dark-blue" layout-fill>
+                    <md-card-header>
+                        <md-card-header-text>
+                            <md-title>
+                                <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id) }}</i>
+                            </md-title>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        {{ item.description }}
+                        <hr>
+                        <md-card md-theme="offblue">
+                            <md-card-content>
+                                <a href="{{ item.link }}">{{ item.link }}</a>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised" ng-click="showPlaceholder()">Update</md-button>
+                        <md-button class="md-raised" ng-click="deleteIdea(item.id)">Remove</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-grid-tile>
+            <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | purchase_user: filter_user.id:currentUser.id">
+                <md-card md-theme="dark-blue" layout-fill>
+                    <md-card-header>
+                        <md-card-header-text>
+                            <md-title>
+                                <b>{{ item.name }}</b> for <i>{{ nameFromID(item.forperson_id) }}</i>
+                            </md-title>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        {{ item.description }}
+                        <hr>
+                        <md-card md-theme="offblue">
+                            <md-card-content>
+                                <a href="{{ item.link }}">{{ item.link }}</a>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised" ng-click="showPlaceholder()">Update</md-button>
+                        <md-button class="md-raised" ng-click="deleteIdea(item.id)">Remove</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-grid-tile>
+        </md-grid-list>
     {% endraw %}
-</div>
-
-<md-card>
-    <md-card-content>
-        <v-accordion class="vAccordion--default">
-            <v-pane ng-repeat="user in userID_CACHE" expanded="pane.isExpanded">
-                <v-pane-header>
-                    {% raw %}
-                    {{ user.first_name }} {{ user.last_name }}
-                    {% endraw %}
-                </v-pane-header>
-                <v-pane-content>
-                    {% raw %}
-                    <md-content>
-                        <md-tabs md-dynamic-height md-border-bottom style="background: white;">
-                            <md-tab label="claims">
-
-                                <md-card>
-                                    <div ng-repeat="claim in list | filter:{requester_id: user.id}">
-                                        <md-content>
-                                            <md-list flex>
-                                                <md-list-item ng-if="claim.granter_id == currentUser.id" class="md-3-line">
-                                                    <div class="md-list-item-text" layout="column">
-                                                        <h3>{{ claim.name }}</h3>
-                                                        <h4>{{ claim.cost }}</h4>
-                                                        <p>{{ claim.description }}</p>
-                                                    </div>
-                                                </md-list-item>
-                                            </md-list>
-                                        </md-content>
-                                    </div>
-                                </md-card>
-
-                            </md-tab>
-                            <md-tab label="ideas">
-
-                                <md-card>
-                                    <div ng-repeat="idea in myideas | filter:{forperson_id: user.id}">
-                                        <md-content>
-                                            <md-list flex>
-                                                <md-list-item ng-if="idea.forperson_id == user.id" class="md-3-line">
-                                                    <div class="md-list-item-text" layout="column">
-                                                        <h3>{{ idea.name }}</h3>
-                                                        <h4>{{ idea.cost }}</h4>
-                                                        <p>{{ idea.description }}</p>
-                                                    </div>
-                                                </md-list-item>
-                                            </md-list>
-                                        </md-content>
-                                    </div>
-
-                            </md-tab>
-                            <md-tab label="purchases">
-
-                                <div ng-repeat="purchase in mypurchases | filter:{purchase}">
-                                    {{ purchase.name }}
-                                </div>
-
-                            </md-tab>
-                        </md-tabs>
-                    </md-content>
-                    {% endraw %}
-                </v-pane-content>
-            </v-pane>
-        </v-accordion>
-    </md-card-content>
-</md-card>
-
+    </div>
 </md-content>
 {% endblock %}

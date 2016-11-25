@@ -272,6 +272,17 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.togglePurchased = function(item, type) {
+                console.log(item, type);
+                $http.get('create/purchase/' + type.toString() + '/' + item.toString())
+                    .then(function(response) {
+                        window.location.reload();
+                    }, function(response) {
+                        $log.debug('Error claiming wish');
+                    });
+
+            }
+
             $scope.addPurchase = function(ev) {
                 $mdDialog.show({
                     controller: AddPurchaseController,
@@ -571,6 +582,19 @@ angular.module('ChristmasList',
         for (i = 0; i < ideas.length; i++) {
             if (ideas[i]['forperson_id'] == user['id']) {
                 filtered.push(ideas[i]);
+            }
+        }
+        return filtered;
+    };
+})
+
+.filter('purchase_user', function() {
+    console.log("Inside filter purchase_user");
+    return function(items, filter_user, current_user) {
+        var filtered = [];
+        for (i = 0; i < items.length; i++) {
+            if ( ( items[i]['granter_id'] == current_user || items[i]['byperson_id'] == current_user ) && items[i]['purchased'] == 1) {
+                filtered.push(items[i]);
             }
         }
         return filtered;

@@ -15,7 +15,7 @@
     <!--<div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">-->
     {% raw %}
     <div hide-gt-md ng-repeat="item in list | wish_user:filter_user">
-        <md-card md-theme='dark-blue'">
+        <md-card md-theme='dark-blue'>
             <md-card-header>
                 <md-card-header-text>
                     <md-title>
@@ -36,6 +36,7 @@
                 </md-card>
             </md-card-content>
             <md-card-actions layout="row" layout-align="end center">
+                <md-checkbox style="margin: 10px" ng-click="togglePurchased(item.id, 'wish')" ng-if="item.granter_id == currentUser.id" ng-checked="item.purchased">Purchased?</md-checkbox>
                 <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
                 <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
             </md-card-actions>
@@ -67,6 +68,7 @@
                         </md-card>
                     </md-card-content>
                     <md-card-actions layout="row" layout-align="end center">
+                        <md-checkbox style="margin: 10px" ng-click="togglePurchased(item.id, 'wish')" ng-if="item.granter_id == currentUser.id" ng-checked="item.purchased">Purchased?</md-checkbox>
                         <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
                         <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
                     </md-card-actions>
