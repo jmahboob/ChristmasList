@@ -2,22 +2,28 @@
 {% block content %}
 {% from "sidenav.html" import sidenav %}
 {% from "menu.html" import menu %}
-{{ menu() }}
 {{ sidenav() }}
+{{ menu() }}
 <md-content flex>
+
+    <md-select placeholder="Filter by..." ng-model="filter_user" md-on-open="loadUsers()">
+        {% raw %}
+        <md-option ng-value="">**Clear Selection**</md-option>
+        <md-option ng-value="user" ng-repeat="user in users">{{ user.first_name }} {{ user.last_name }} ({{ user.wish_total }})</md-option>
+        {% endraw %}
+    </md-select>
 
     <md-card md-theme='blue'>
         <md-card-content>
             {% raw %}
-            You're currently claiming <b><i>{{ myItemCount }}</b></i> items totalling <b><i>{{ myItemTotal }}</b></i> dollars
+            You're currently claiming <b><i>{{ claimCount(currentUser.id, "count") }}</b></i> items totalling <b><i>{{ claimCount(currentUser.id, "cost") }}</b></i> dollars
             {% endraw %}
         </md-card-content>
     </md-card>
 
     <md-divider></md-divider>
 
-    <!--<div ng-repeat="item in list | filter:{granter_id: currentUser.id }">-->
-    <div ng-repeat="item in list | claim_user:currentUser">
+    <div hide-gt-md ng-repeat="item in list | claim_user: currentUser:filter_user">
     {% raw %}
     <md-card md-theme='dark-blue'>
         <md-card-header>
@@ -44,7 +50,36 @@
             <md-button class='md-raised' ng-click="deleteWish(item.id)">Remove</md-button>
         </md-card-actions>
     </md-card>
+    </div>
+
+    <div hide-xs hide-sm hide-md>
+        <md-grid-list md-cols-xl="3" md-cols-lg="2" md-cols="2" md-row-height="2:1" md-gutter="12px">
+            <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | claim_user: currentUser:filter_user">
+                <md-card md-theme="dark-blue" layout-fill>
+                    <md-card-header>
+                        <md-card-header-text>
+                            <md-title>
+                                <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
+                            </md-title>
+                            <md-subhead>
+                                ${{ item.cost }}
+                            </md-subhead>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        {{ item.description }}
+                        <hr>
+                        <md-card md-theme="offblue">
+                            <md-card-content>
+                                <a href="{{ itemlink  }}">{{ item.link }}</a>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                </md-card>
+            </md-grid-tile>
+        </md-grid-list>
+    </div>
     {% endraw %}
-</div>
+
 </md-content>
 {% endblock %}

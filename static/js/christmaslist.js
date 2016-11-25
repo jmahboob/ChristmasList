@@ -72,6 +72,22 @@ angular.module('ChristmasList',
                 return "No User ID Found";
             };
 
+            $scope.claimCount = function(id, field) {
+                var count = 0;
+                var cost = 0;
+                for (var i = 0; i < $scope.list.length; i++) {
+                    if ($scope.list[i].granter_id == id) {
+                        count++;
+                        cost += $scope.list[i].cost;
+                    }
+                }
+                if (field == "count") {
+                    return count;
+                } else {
+                    return cost;
+                }
+            };
+
             $scope.mylist = '';
             $scope.list = '';
             $scope.myItemCount = 0;
@@ -304,6 +320,26 @@ angular.module('ChristmasList',
                 return $mdSidenav('menu').isOpen();
             }
 
+            $scope.locationToText = function() {
+                switch (window.location.pathname) {
+                    case "/":
+                        return "Home";
+                    case "/list":
+                        return "The Family List";
+                    case "/mylist":
+                        return "My List";
+                    case "/myclaims":
+                        return "My Claims";
+                    case "/myideas":
+                        return "My Ideas";
+                    case "/mypurchases":
+                        return "My Purchases";
+                    default:
+                        return "";
+                }
+                return "";
+            };
+
             function AddWishController($scope, $mdDialog) {
                 $scope.hide = function() {
                     $mdDialog.hide();
@@ -504,16 +540,37 @@ angular.module('ChristmasList',
 .filter('claim_user', function() {
     console.log("Inside filter claim_user");
 
-    return function(wishes, user) {
+    return function(wishes, user, filter_user) {
         var filtered = [];
         if(!user) {
             console.log("No user defined");
             return wishes;
         }
         for (i = 0; i < wishes.length; i++) {
-            console.log(wishes[i]['name'], wishes[i]['granter_id'], user.id);
-            if (wishes[i]['granter_id'] == user.id) {
-                filtered.push(wishes[i]);
+            if (!filter_user) {
+                if (wishes[i]['granter_id'] == user.id) {
+                    filtered.push(wishes[i]);
+                }
+            } else {
+                if (wishes[i]['granter_id'] == user.id && wishes[i]['requester_id'] == filter_user['id']) {
+                    filtered.push(wishes[i]);
+                }
+            }
+        }
+        return filtered;
+    };
+})
+
+.filter('idea_user', function() {
+    console.log("Inside filter idea_user");
+    return function(ideas, user) {
+        var filtered = [];
+        if (!user) {
+            return ideas;
+        }
+        for (i = 0; i < ideas.length; i++) {
+            if (ideas[i]['forperson_id'] == user['id']) {
+                filtered.push(ideas[i]);
             }
         }
         return filtered;
@@ -522,21 +579,16 @@ angular.module('ChristmasList',
 
 .filter('wish_user', function() {
     console.log("Inside filter wish_user");
-
     return function(wishes, user) {
         var filtered = [];
-
         if (!user) {
             return wishes;
         }
-
         for (i = 0; i < wishes.length; i++) {
             if (wishes[i]['requester_id'] == user['id']) {
                 filtered.push(wishes[i]);
             }
         }
-
         return filtered;
     };
-
 });

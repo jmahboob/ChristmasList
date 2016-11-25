@@ -14,8 +14,8 @@
 
     <!--<div ng-repeat="item in mylist | filter:{requester_id: '!'+currentUser.id }">-->
     {% raw %}
-    <div hide-gt-md ng-repeat="item in list | filter: { requester_id: user.id }">
-        <md-card md-theme='dark-blue'>
+    <div hide-gt-md ng-repeat="item in list | wish_user:filter_user">
+        <md-card md-theme='dark-blue'">
             <md-card-header>
                 <md-card-header-text>
                     <md-title>
@@ -42,7 +42,7 @@
         </md-card>
     </div>
 
-    <div hide-xs hide-sm>
+    <div hide-xs hide-sm hide-md>
         <md-grid-list md-cols-xl="3" md-cols-lg="2" md-cols="1" md-row-height="2:1" md-row-height-xs="3:4" md-gutter="12px">
             <!--<md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | filter: { requester_id: filter_user.id }">-->
             <md-grid-tile md-colspan="1" md-rowspan="1" ng-repeat="item in list | wish_user:filter_user">
