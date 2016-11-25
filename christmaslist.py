@@ -522,6 +522,11 @@ def loadTracking():
 def myList():
     return render_template("mylist.html")
 
+@app.route("/myclaims")
+@login_required
+def myClaims():
+    return render_template("myclaims.html")
+
 @app.route("/mylist/loadlist")
 @login_required
 def loadList():

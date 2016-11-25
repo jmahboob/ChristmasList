@@ -1,0 +1,50 @@
+{% extends "template.html" %}
+{% block content %}
+{% from "sidenav.html" import sidenav %}
+{% from "menu.html" import menu %}
+{{ menu() }}
+{{ sidenav() }}
+<md-content flex>
+
+    <md-card md-theme='blue'>
+        <md-card-content>
+            {% raw %}
+            You're currently claiming <b><i>{{ myItemCount }}</b></i> items totalling <b><i>{{ myItemTotal }}</b></i> dollars
+            {% endraw %}
+        </md-card-content>
+    </md-card>
+
+    <md-divider></md-divider>
+
+    <!--<div ng-repeat="item in list | filter:{granter_id: currentUser.id }">-->
+    <div ng-repeat="item in list | claim_user:currentUser">
+    {% raw %}
+    <md-card md-theme='dark-blue'>
+        <md-card-header>
+            <md-card-header-text>
+                <md-title>
+                    <i>{{ nameFromID(item.requester_id) }}</i> wants <b>{{ item.name }}</b>
+                </md-title>
+                <md-subhead>
+                    ${{ item.cost }}
+                </md-subhead>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            {{ item.description }}
+            <hr>
+            <md-card md-theme='offblue'>
+                <md-card-content>
+                    <a href="{{ item.link }}">{{ item.link }}</a>
+                </md-card-content>
+            </md-card>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class='md-raised' ng-click="updateWish(item.id)">Update</md-button>
+            <md-button class='md-raised' ng-click="deleteWish(item.id)">Remove</md-button>
+        </md-card-actions>
+    </md-card>
+    {% endraw %}
+</div>
+</md-content>
+{% endblock %}

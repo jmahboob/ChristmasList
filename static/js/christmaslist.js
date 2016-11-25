@@ -118,6 +118,10 @@ angular.module('ChristmasList',
                 window.location = "/mylist";
             };
 
+            $scope.accessMyClaims = function() {
+                window.location = "/myclaims";
+            };
+
             $scope.accessMyIdeas = function() {
                 window.location = "/myideas";
             };
@@ -497,6 +501,24 @@ angular.module('ChristmasList',
     });*/
 })
 
+.filter('claim_user', function() {
+    console.log("Inside filter claim_user");
+
+    return function(wishes, user) {
+        var filtered = [];
+        if(!user) {
+            console.log("No user defined");
+            return wishes;
+        }
+        for (i = 0; i < wishes.length; i++) {
+            console.log(wishes[i]['name'], wishes[i]['granter_id'], user.id);
+            if (wishes[i]['granter_id'] == user.id) {
+                filtered.push(wishes[i]);
+            }
+        }
+        return filtered;
+    };
+})
 
 .filter('wish_user', function() {
     console.log("Inside filter wish_user");
