@@ -325,7 +325,8 @@ def create_wish():
             created = datetime.datetime.now(),
             requester = current_user,
             granter = None,
-            deleted = 0
+            deleted = 0,
+            purchased = 0
         )
 
         if not 'name' in data:
@@ -436,7 +437,8 @@ def create_idea():
             created = datetime.datetime.now(),
             byperson_id = current_user.id,
             forperson_id = data['forperson'],
-            deleted = 0
+            deleted = 0,
+            purchased = 0
         )
         if not 'description' in data:
             new_idea.description = ""
