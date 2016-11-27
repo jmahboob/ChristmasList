@@ -37,57 +37,54 @@
             <v-pane ng-repeat="user in userID_CACHE" expanded="pane.isExpanded">
                 <v-pane-header>
                     {% raw %}
-                    {{ user.first_name }} {{ user.last_name }}
+                    <b>{{ user.first_name }} {{ user.last_name }}</b> - Claims: {{ numClaims(user.id) }} / Ideas: {{ numIdeas(user.id) }} / Purchases: {{ numPurchases(user.id) }}
                     {% endraw %}
                 </v-pane-header>
                 <v-pane-content>
                     {% raw %}
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom style="background: white;">
+
                             <md-tab label="claims">
-
                                 <md-card>
-                                    <div ng-repeat="claim in list | filter:{requester_id: user.id}">
-                                        <md-content>
-                                            <md-list flex>
-                                                <md-list-item ng-if="claim.granter_id == currentUser.id" class="md-3-line">
-                                                    <div class="md-list-item-text" layout="column">
-                                                        <h3>{{ claim.name }}</h3>
-                                                        <h4>{{ claim.cost }}</h4>
-                                                        <p>{{ claim.description }}</p>
-                                                    </div>
-                                                </md-list-item>
-                                            </md-list>
-                                        </md-content>
-                                    </div>
+                                    <md-card-content>
+                                        <div ng-repeat="claim in list | filter:{requester_id: user.id}">
+                                            <div ng-if="claim.granter_id == currentUser.id">
+                                                {{ claim.name }}: ${{ claim.cost }}
+                                                <md-divider></md-divider>
+                                            </div>
+                                        </div>
+                                    </md-card-content>
                                 </md-card>
-
                             </md-tab>
+
                             <md-tab label="ideas">
-
                                 <md-card>
-                                    <div ng-repeat="idea in myideas | filter:{forperson_id: user.id}">
-                                        <md-content>
-                                            <md-list flex>
-                                                <md-list-item ng-if="idea.forperson_id == user.id" class="md-3-line">
-                                                    <div class="md-list-item-text" layout="column">
-                                                        <h3>{{ idea.name }}</h3>
-                                                        <h4>{{ idea.cost }}</h4>
-                                                        <p>{{ idea.description }}</p>
-                                                    </div>
-                                                </md-list-item>
-                                            </md-list>
-                                        </md-content>
+                                    <md-card-content>
+                                        <div ng-repeat="idea in myideas | filter:{forperson_id: user.id}">
+                                            <div ng-if="idea.forperson_id == user.id">
+                                                {{ idea.name }}: ${{ idea.cost }}
+                                                <md-divider></md-divider>
+                                            </div>
+                                    </md-card-content>
                                     </div>
-
                             </md-tab>
+
                             <md-tab label="purchases">
-
-                                <div ng-repeat="purchase in mypurchases | filter:{purchase}">
-                                    {{ purchase.name }}
-                                </div>
-
+                                <md-card>
+                                    <md-card-content>
+                                        <div ng-repeat="idea in myideas | purchase_user: user.id:currentUser.id">
+                                            {{ idea.name }}: ${{ idea.cost }}
+                                            <md-divider></md-divider>
+                                        </div>
+                                        <div ng-repeat="wish in list | purchase_user: user.id:currentUser.id">
+                                            {{ wish.name }}: ${{ wish.cost }}
+                                            <md-divider></md-divider>
+                                        </div>
+                                    </md-card-content>
+                                </md-card>
                             </md-tab>
+
                         </md-tabs>
                     </md-content>
                     {% endraw %}

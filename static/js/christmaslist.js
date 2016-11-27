@@ -88,6 +88,41 @@ angular.module('ChristmasList',
                 }
             };
 
+            $scope.numClaims = function(user) {
+                count = 0;
+                for (i = 0; i < $scope.list.length; i++) {
+                    if ($scope.list[i]['granter_id'] == $scope.currentUser.id && $scope.list[i]['requester_id'] == user) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+
+            $scope.numIdeas = function(user) {
+                count = 0;
+                for (i = 0; i < $scope.myideas.length; i++) {
+                    if ($scope.myideas[i]['byperson_id'] == $scope.currentUser.id && $scope.myideas[i]['forperson_id'] == user) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+
+            $scope.numPurchases = function(user) {
+                count = 0;
+                for (i = 0; i < $scope.myideas.length; i++) {
+                    if ($scope.myideas[i]['byperson_id'] == $scope.currentUser.id && $scope.myideas[i]['forperson_id'] == user && $scope.myideas[i]['purchased'] == 1) {
+                        count++;
+                    }
+                }
+                for (i = 0; i < $scope.list.length; i++) {
+                    if ($scope.list[i]['granter_id'] == $scope.currentUser.id && $scope.list[i]['requester_id'] == user && $scope.list[i]['purchased'] == 1) {
+                        count++;
+                    }
+                }
+                return count;
+            }
+
             $scope.mylist = '';
             $scope.list = '';
             $scope.myItemCount = 0;
@@ -593,7 +628,8 @@ angular.module('ChristmasList',
     return function(items, filter_user, current_user) {
         var filtered = [];
         for (i = 0; i < items.length; i++) {
-            if ( ( items[i]['granter_id'] == current_user || items[i]['byperson_id'] == current_user ) && items[i]['purchased'] == 1) {
+            if ( ( items[i]['granter_id'] == current_user || items[i]['byperson_id'] == current_user ) && items[i]['purchased'] == 1 && (items[i]['requester_id'] == filter_user || items[i]['forperson_id'] == filter_user) ) {
+                //console.log(items[i]['granter_id'], items[i]['byperson_id'], current_user);
                 filtered.push(items[i]);
             }
         }
