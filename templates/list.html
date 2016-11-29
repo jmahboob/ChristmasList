@@ -38,6 +38,7 @@
             <md-card-actions layout="row" layout-align="end center">
                 <md-checkbox style="margin: 10px" ng-click="togglePurchased(item.id, 'wish')" ng-if="item.granter_id == currentUser.id" ng-checked="item.purchased">Purchased?</md-checkbox>
                 <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
+                <md-button class="md-raised" ng-click="unclaimWish(item.id)" ng-if="item.granter_id == currentUser.id">Un-claim</md-button>
                 <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
             </md-card-actions>
         </md-card>
@@ -70,6 +71,7 @@
                     <md-card-actions layout="row" layout-align="end center">
                         <md-checkbox style="margin: 10px" ng-click="togglePurchased(item.id, 'wish')" ng-if="item.granter_id == currentUser.id" ng-checked="item.purchased">Purchased?</md-checkbox>
                         <md-button class="md-raised" disabled ng-click="showPlaceholder()" ng-if="item.granter_id" ng-value="getUserByID(item.granter_id)">Claimed by {{ getUserByID(item.granter_id) }}</md-button>
+                        <md-button class="md-raised" ng-click="unclaimWish(item.id)" ng-if="item.granter_id == currentUser.id">Un-claim</md-button>
                         <md-button class='md-raised' ng-click="claimWish(item.id)" ng-if="!item.granter_id">Claim</md-button>
                     </md-card-actions>
                 </md-card>

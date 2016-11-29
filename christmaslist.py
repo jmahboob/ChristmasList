@@ -402,6 +402,17 @@ def claim_wish(id):
         return "Claimed Wish"
     return "Error in /claim/wish/<id>"
 
+@app.route("/unclaim/wish/<id>", methods=['POST'])
+@login_required
+def unclaim_wish(id):
+    if request.method == 'POST':
+        to_claim = Wish.query.filter_by(id=id).first()
+        to_claim.granter_id = ""
+        db.session.commit()
+        return "Un-claimed Wish"
+    return "Error in /claim/wish/<id>"
+
+
 @app.route("/create/purchase/<type>/<id>", methods=['POST', 'GET'])
 @login_required
 def create_purchase(type, id):

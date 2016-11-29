@@ -307,6 +307,26 @@ angular.module('ChristmasList',
                 });
             };
 
+            $scope.unclaimWish = function(id) {
+                $log.debug(id);
+                var confirm = $mdDialog.confirm()
+                    .title('Un-claim Wish')
+                    .textContent('Click OK to un-claim this wish :-(')
+                    .ariaLabel('unclaim wish')
+                    .ok('Un-claim')
+                    .cancel('Cancel');
+
+                $mdDialog.show(confirm).then(function() {
+                    $http.post('unclaim/wish/' + id.toString())
+                        .then(function(response) {
+                            $log.debug('Un-claimed wish');
+                            window.location.reload();
+                        }, function(response) {
+                            $log.debug('Error un-claiming wish');
+                        });
+                });
+            };
+
             $scope.togglePurchased = function(item, type) {
                 console.log(item, type);
                 $http.get('create/purchase/' + type.toString() + '/' + item.toString())
