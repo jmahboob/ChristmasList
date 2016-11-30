@@ -475,7 +475,8 @@ def create_idea():
 def delete_idea(id):
     if request.method == 'DELETE':
         to_delete = Idea.query.filter_by(id=id).first()
-        print to_delete.name
+        # wtf the print statement can't handle the pokemon e? ascii 0233?
+        #print to_delete.name
         print current_user.id
         print to_delete.byperson_id
         if current_user.id != to_delete.byperson_id:
