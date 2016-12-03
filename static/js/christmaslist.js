@@ -30,9 +30,12 @@ angular.module('ChristmasList',
                 $http.get("get/currentuser").then(function(response) {
                     $scope.currentUser.name = response.data.name;
                     $scope.currentUser.id = response.data.id;
+                    $scope.currentUser.notes = atob(response.data.notes);
                 });
             };
             $scope.getCurrentUser();
+
+            $scope.$broadcast('md-resize-textarea');
 
             $log.debug("Initializing Controller");
 
@@ -240,6 +243,27 @@ angular.module('ChristmasList',
                 );
             };
 
+            $scope.openNotes = function($mdOpenMenu, ev) {
+                $scope.$broadcast('md-resize-textarea');
+                originatorEv = ev;
+                $mdOpenMenu(ev);
+            }
+
+            $scope.saveNotes = function(id, notes) {
+                var headers = {'Content-Type': 'application/json'};
+                var to_send = {};
+                to_send.id = id;
+                to_send.notes = btoa(notes);
+                $http.post("update/user", JSON.stringify(to_send), headers)
+                    .success(function(data, status, headers, config) {
+                        $log.debug("Saved Notes");
+                        //window.location.reload();
+                    })
+                    .error(function(data, status, headers, config) {
+                        $log.debug("Error saving Notes");
+                    });
+            }
+
             $scope.addWish = function(ev) {
                 $mdDialog.show({
                     controller: AddWishController,
@@ -335,7 +359,6 @@ angular.module('ChristmasList',
                     }, function(response) {
                         $log.debug('Error claiming wish');
                     });
-
             }
 
             $scope.addPurchase = function(ev) {

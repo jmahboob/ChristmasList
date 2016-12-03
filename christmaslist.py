@@ -5,6 +5,7 @@ newrelic.agent.initialize('newrelic.ini')
 
 #import os
 #import sys
+#import base64
 import datetime
 import logging
 
@@ -85,6 +86,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
+    notes = db.Column(db.String(512))
 
     def serialize(self):
         return {
@@ -92,6 +94,7 @@ class User(db.Model, UserMixin):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'email': self.email,
+            'notes': self.notes
         }
 
     #def is_active(self):
@@ -268,6 +271,7 @@ def getCurrentUser():
     ret = {}
     ret['id'] = user.id
     ret['name'] = user.first_name + " " + user.last_name
+    ret['notes'] = user.notes
     return jsonify(ret)
 
 @app.route("/get/user/<id>")
@@ -306,6 +310,16 @@ def create_user():
     #session.commit()
     #session.close()
     return jsonify(data)
+
+@app.route("/update/user", methods=['POST'])
+@login_required
+def update_user():
+    data = request.get_json(force=True)
+    user = User.query.filter_by(id=data['id']).first()
+    user.notes = data['notes']
+    db.session.commit()
+    return "Updated User"
+
 
 @app.route("/create/wish", methods=['POST', 'GET'])
 @login_required
